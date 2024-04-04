@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 
 from config import config 
 
-from routes import Auth, User
+from routes import Auth, User , Register
 
 app = Flask(__name__)
 jwt = JWTManager(app)
@@ -17,6 +17,7 @@ def page_not_found(error):
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     
+    app.register_blueprint(Register.main, url_prefix='/register')
     app.register_blueprint(Auth.main, url_prefix='/auth')
     app.register_blueprint(User.main, url_prefix='/api/user')
     
