@@ -13,13 +13,13 @@ main = Blueprint("register_blueprint", __name__)
 def add_user():
     try:
         # Obtener datos del formulario
-        username = request.json['name']
+        username = request.json['username']
         password = request.json['password']
         nombre_completo = request.json['nombre_completo']
         cedula = request.json['cedula']
-        telefono = int(request.json['phone'])
-        huella = request.json['fingerprint']
-        foto_perfil = request.json['profilePhoto']
+        telefono = int(request.json['telefono'])
+        huella = request.json['huella']
+        foto_perfil = request.json['foto_perfil']
 
         id = uuid.uuid4()
         user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella)

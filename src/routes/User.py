@@ -60,13 +60,13 @@ def add_user():
 @jwt_required()
 def update_user(id):
     try:
-        username = request.json['name']
+        username = request.json['username']
         password = request.json['password']
         nombre_completo = request.json['nombre_completo']
+        telefono = int(request.json['telefono'])
         cedula = request.json['cedula']
-        telefono = int(request.json['phone'])
-        huella = request.json['fingerprint']
-        foto_perfil = request.json['profilePhoto']
+        foto_perfil = request.json['foto_perfil']
+        huella = request.json['huella']
         user = User(id,username, password, nombre_completo,cedula,telefono,foto_perfil,huella)
 
         affected_rows = UserModel.update_user(user)
