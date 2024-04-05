@@ -19,7 +19,7 @@ class UserModel():
                 resultset = cursor.fetchall()
 
                 for row in resultset:
-                    user = User(row[0], row[1], row[2], row[3], row[4], row[5])
+                    user = User(row[0], row[1], row[2], row[3], row[4], row[5],row[6],row[7])
                     users.append(user.to_JSON())
 
             connection.close()
@@ -39,7 +39,7 @@ class UserModel():
 
                 user = None
                 if row != None:
-                    user = User(row[0], row[1], row[2], row[3], row[4], row[5])
+                    user = User(row[0], row[1], row[2], row[3], row[4], row[5],row[6],row[7])
                     user = user.to_JSON()
 
             connection.close()
@@ -69,8 +69,8 @@ class UserModel():
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s,  WHERE id = %s""", (
-                     user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula,user.telefono, user.foto_perfil, user.huela ,user.id))
+                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s, foto_perfil = %s, huella = %s WHERE id = %s""", (
+                     user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula,user.telefono, user.foto_perfil, user.huella ,user.id))
                 affected_rows = cursor.rowcount
                 connection.commit()
 
