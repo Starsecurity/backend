@@ -15,13 +15,13 @@ class User():
     def to_JSON(self):
         return {
             'id' :  self.id,
-            'username' : self.username,
+            'name' : self.username,
             'password' :  self.password,
             'nombre_completo' :  self.nombre_completo,
             'cedula' :  self.cedula,
             'telefono' : self.telefono,
-            'foto_perfil': self.foto_perfil,
-            'huella' : self.huella
+            'profilePhoto': self.foto_perfil,
+            'fingerprint' : self.huella
         }
     
     @classmethod
