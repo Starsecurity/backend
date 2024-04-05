@@ -11,7 +11,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 main = Blueprint("register_blueprint", __name__)
 
-@main.route('/', methods=['POST'])
+@main.route('register', methods=['POST'])
 def add_user():
     try:
         # Obtener datos del formulario

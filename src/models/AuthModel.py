@@ -9,13 +9,13 @@ class AuthModel():
     def login(self, user):
         try:
             cursor = get_connection().cursor()
-            sql = """SELECT id, username, password, nombre_completo, cedula, telefono FROM usuarios 
+            sql = """SELECT id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella FROM usuarios 
                     WHERE username = '{}'""".format(user.username)
             cursor.execute(sql)
             row = cursor.fetchone()
             if row != None:
                 user = User(row[0], row[1], User.check_password(
-                    row[2], user.password), row[3], row[4], row[5])
+                    row[2], user.password), row[3], row[4], row[5],row[6],row[7])
                 
                 access_token = create_access_token(identity = user.id)
                 user = user.to_JSON()
