@@ -8,7 +8,7 @@ main = Blueprint("auth_blueprint", __name__)
 @main.route('/login', methods=['POST'])
 def auth():
     try:
-        user = User(id,request.json['username'],request.json['password'])
+        user = User(id,request.json['name'],request.json['password'])
         user_data = AuthModel.login(user)
         return user_data
     except Exception as ex:
