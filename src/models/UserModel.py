@@ -15,7 +15,7 @@ class UserModel():
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT id, username, password, nombre_completo, cedula, telefono FROM usuarios")
+                    "SELECT id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella FROM usuarios")
                 resultset = cursor.fetchall()
 
                 for row in resultset:
@@ -34,7 +34,7 @@ class UserModel():
 
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT id, username, password, nombre_completo, cedula, telefono FROM usuarios WHERE cedula = %s", (cedula,))
+                    "SELECT id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella FROM usuarios WHERE cedula = %s", (cedula,))
                 row = cursor.fetchone()
 
                 user = None
@@ -53,8 +53,8 @@ class UserModel():
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO usuarios (id, username, password, nombre_completo, cedula, telefono) 
-                                VALUES (%s,%s, %s, %s, %s,%s)""", (user.id,user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono))
+                cursor.execute("""INSERT INTO usuarios (id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella) 
+                                VALUES (%s,%s, %s, %s, %s,%s,%s,%s)""", (user.id,user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono,user.foto_perfil,user.huella))
                 affected_rows = cursor.rowcount
                 connection.commit()
 
@@ -69,8 +69,8 @@ class UserModel():
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s WHERE id = %s""", (
-                     user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula,user.telefono, user.id))
+                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s,  WHERE id = %s""", (
+                     user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula,user.telefono, user.foto_perfil, user.huela ,user.id))
                 affected_rows = cursor.rowcount
                 connection.commit()
 
