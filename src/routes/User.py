@@ -1,3 +1,4 @@
+#User.py
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 import uuid
@@ -9,7 +10,7 @@ from models.UserModel import UserModel
 main = Blueprint("user_blueprint", __name__)
 
 @main.route('/')
-@jwt_required()
+@jwt_required(optional=True)
 def get_users():
     try:
         users = UserModel.get_users()
@@ -18,7 +19,7 @@ def get_users():
         return  jsonify({'message': str(ex)}), 500
 
 @main.route('<cedula>')
-@jwt_required()
+@jwt_required(optional=True)
 def get_user(cedula):
     try:
         user = UserModel.get_user(cedula)
@@ -31,7 +32,7 @@ def get_user(cedula):
 
 
 @main.route('add', methods=['POST'])
-@jwt_required()
+@jwt_required(optional=True)
 def add_user():
     
     try:
@@ -54,7 +55,7 @@ def add_user():
         return jsonify({'message': str(ex)}), 500
 
 @main.route('update/<id>', methods=['PUT'])
-@jwt_required()
+@jwt_required(optional=True)
 def update_user(id):
     try:
         username = request.json['username']
@@ -75,7 +76,7 @@ def update_user(id):
         return jsonify({'message': str(ex)}), 500
 
 @main.route('delete/<id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required(optional=True)
 def delete_user(id):
     try:
         user = User(id)
