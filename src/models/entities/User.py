@@ -2,7 +2,7 @@ from werkzeug.security import check_password_hash
 
 class User():
 
-    def __init__(self, id, username=None, password = None, nombre_completo = None, cedula = None, telefono = None, foto_perfil = None, huella = None) -> None:
+    def __init__(self, id, username=None, password = None, nombre_completo = None, cedula = None, telefono = None, foto_perfil = None, huella = None, rol = None) -> None:
         self.id = id
         self.username = username
         self.password = password
@@ -11,6 +11,7 @@ class User():
         self.telefono = telefono
         self.foto_perfil = foto_perfil
         self.huella = huella
+        self.rol = rol
     
     def to_JSON(self):
         return {
@@ -21,7 +22,8 @@ class User():
             'cedula' :  self.cedula,
             'telefono' : self.telefono,
             'profilePhoto': self.foto_perfil,
-            'fingerprint' : self.huella
+            'fingerprint' : self.huella,
+            'rol' : self.rol
         }
     
     @classmethod

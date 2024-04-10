@@ -9,8 +9,9 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 main = Blueprint("register_blueprint", __name__)
 
-@main.route('/', methods=['POST'])
+@main.route('/', methods=['POST', 'OPTIONS'])
 def add_user():
+    
     try:
         # Obtener datos del formulario
         username = request.json['name']
@@ -20,17 +21,18 @@ def add_user():
         telefono = int(request.json['telefono'])
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
-
+        default_role = "usuario"
+        
         id = uuid.uuid4()
-        user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella)
+        user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella,default_role)
         
         affected_rows = UserModel.add_user(user)
-
+        
         if affected_rows == 1:
             return user.to_JSON()
         else:
             return jsonify({'message': "Error on insert"}), 500
-
+        
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 

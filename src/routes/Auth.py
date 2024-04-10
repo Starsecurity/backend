@@ -12,7 +12,9 @@ def auth():
         user_data = AuthModel.login(user)
         return user_data
     except Exception as ex:
-        return  jsonify({'message': str(ex)}), 500
+        return  jsonify({'message': str(ex)}), 50
+    
+
 
 # @api.after_request
 # def refresh_expiring_jwts(response):
