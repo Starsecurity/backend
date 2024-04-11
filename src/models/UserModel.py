@@ -93,7 +93,7 @@ class UserModel():
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s, foto_perfil = %s, rol = %s ,huella = %s WHERE id = %s""", (
+                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s, foto_perfil = %s,huella = %s, rol=%s WHERE id = %s""", (
                     user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula, user.telefono, user.foto_perfil, user.huella,user.rol, user.id))
                 affected_rows = cursor.rowcount
                 connection.commit()
