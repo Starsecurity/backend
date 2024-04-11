@@ -22,7 +22,7 @@ def add_user():
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
         default_role = "usuario"
-        
+            
         id = uuid.uuid4()
         user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella,default_role)
         

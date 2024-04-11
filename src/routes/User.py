@@ -88,9 +88,10 @@ def update_user(id):
         telefono = int(request.json['telefono'])
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
+        rol = request.json['rol']
 
         user = User(id, username, password, nombre_completo,
-                    cedula, telefono, foto_perfil, huella)
+                    cedula, telefono, foto_perfil, huella,rol)
 
         affected_rows = UserModel.update_user(user)
 
