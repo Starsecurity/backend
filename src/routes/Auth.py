@@ -14,7 +14,11 @@ def auth():
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 50
     
-
+@main.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 # @api.after_request
 # def refresh_expiring_jwts(response):
