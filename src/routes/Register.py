@@ -1,5 +1,7 @@
+#Register.py
 from flask import Blueprint, jsonify, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
+
 import uuid
 
 from models.entities.User import User
