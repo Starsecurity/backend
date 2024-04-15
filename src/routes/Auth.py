@@ -13,7 +13,7 @@ def login():
         user_data = AuthModel.login(user)
         return user_data
     except Exception as ex:
-        return  jsonify({'message': str(ex)}), 50
+        return  jsonify({'message': str(ex)}), 500
     
 @main.route("/logout", methods=["POST"])
 def logout():
@@ -38,5 +38,3 @@ def logout():
 #         # Case where there is not a valid JWT. Just return the original respone
 #         return response
 
-# @main.route('/login',methods=['POST'])
-#     def
