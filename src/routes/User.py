@@ -9,7 +9,6 @@ from models.UserModel import UserModel
 
 main = Blueprint("user_blueprint", __name__)
 
-
 @main.route('/')
 @jwt_required()
 def get_users():
