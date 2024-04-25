@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash
 
 from .entities.User import User
 
-
 class UserModel():
 
     @classmethod
@@ -134,7 +133,6 @@ class UserModel():
     #             if user.huella is not None:
     #                 update_query += "huella = %s, "
     #                 parameters['huella'] = user.huella
-
     #             # Verificamos si hay campos para actualizar
     #             if parameters:
     #                 update_query = update_query.rstrip(
@@ -147,7 +145,6 @@ class UserModel():
     #             else:
     #                 # Si no hay campos para actualizar, retornamos 0 filas afectadas
     #                 affected_rows = 0
-
     #         connection.close()
     #         return affected_rows
     #     except Exception as ex:
