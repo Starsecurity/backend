@@ -45,7 +45,6 @@ def get_user(cedula):
 def add_user():
 
     try:
-
         current_user_id = get_jwt_identity()
         user = UserModel.get_user_by_id(current_user_id)
         current_user_role = user['rol']
