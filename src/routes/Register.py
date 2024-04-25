@@ -7,11 +7,9 @@ import uuid
 from models.entities.User import User
 from models.UserModel import UserModel
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
 main = Blueprint("register_blueprint", __name__)
 
-@main.route('/', methods=['POST', 'OPTIONS'])
+@main.route('', methods=['POST'])
 def add_user():
     
     try:
@@ -37,6 +35,3 @@ def add_user():
         
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
