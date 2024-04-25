@@ -9,7 +9,7 @@ from routes import Auth, User , Register
 app = Flask(__name__)
 jwt = JWTManager(app)
 
-CORS(jwt,resources={"*":{"origins":"http://localhost:3000"}})
+CORS(app,resources={"*":{"origins":"http://localhost:3000"}})
 
 def page_not_found(error):
     return "<h1>Not found page</h1>", 404
