@@ -18,7 +18,7 @@ class UserModel():
                 cursor.execute(
                     "SELECT * FROM usuarios")
                 resultset = cursor.fetchall()
-
+                
                 for row in resultset:
                     user = User(row[0], row[1], row[2], row[3],
                                 row[4], row[5], row[6], row[7], row[8])
@@ -111,7 +111,6 @@ class UserModel():
     #             # Inicializamos las partes de la consulta SQL
     #             update_query = "UPDATE usuarios SET "
     #             parameters = {}
-
     #             # Construimos dinámicamente la parte SET de la consulta SQL y los parámetros
     #             if user.username is not None:
     #                 update_query += "username = %s, "

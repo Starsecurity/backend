@@ -17,7 +17,7 @@ def page_not_found(error):
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     
-    app.register_blueprint(Register.main, url_prefix='/')
+    app.register_blueprint(Register.main, url_prefix='/register')
     app.register_blueprint(Auth.main, url_prefix='/auth')
     app.register_blueprint(User.main, url_prefix='/api/user')
     
