@@ -1,4 +1,4 @@
-# Auth.py
+# 
 from flask import Blueprint, jsonify, request
 from models.AuthModel import AuthModel
 from models.entities.User import User
