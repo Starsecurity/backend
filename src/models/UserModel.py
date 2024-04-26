@@ -20,7 +20,7 @@ class UserModel():
                 
                 for row in resultset:
                     user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
+                                row[4], row[5], row[6], row[7], row[8],row[9],row[10])
                     users.append(user.to_JSON())
 
             connection.close()
@@ -41,7 +41,7 @@ class UserModel():
                 user = None
                 if row != None:
                     user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
+                                row[4], row[5], row[6], row[7], row[8],row[9],row[10])
                     user = user.to_JSON()
 
             connection.close()
@@ -62,7 +62,7 @@ class UserModel():
                 user = None
                 if row != None:
                     user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
+                                row[4], row[5], row[6], row[7], row[8],row[9],row[10])
                     user = user.to_JSON()
 
             connection.close()
@@ -76,8 +76,8 @@ class UserModel():
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO usuarios (id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella,rol) 
-                                VALUES (%s,%s, %s, %s, %s,%s,%s,%s,%s)""", (user.id, user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono, user.foto_perfil, user.huella, user.rol))
+                cursor.execute("""INSERT INTO usuarios (id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella,rol,delante_cedula,reverso_cedula) 
+                                VALUES (%s,%s, %s, %s, %s,%s,%s,%s,%s,%s,%s)""", (user.id, user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono, user.foto_perfil, user.huella, user.rol,user.delante_cedula,user.delante_cedula))
                 affected_rows = cursor.rowcount
                 connection.commit()
 
@@ -92,8 +92,8 @@ class UserModel():
             connection = get_connection()
 
             with connection.cursor() as cursor:
-                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s, foto_perfil = %s,huella = %s, rol=%s WHERE id = %s""", (
-                    user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula, user.telefono, user.foto_perfil, user.huella,user.rol, user.id))
+                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s, foto_perfil = %s,huella = %s, rol=%s, delante_cedula=%s, reverso_cedula=%s WHERE id = %s""", (
+                    user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula, user.telefono, user.foto_perfil, user.huella,user.rol, user.delante_cedula, user.reverso_cedula, user.id))
                 affected_rows = cursor.rowcount
                 connection.commit()
 
@@ -102,6 +102,21 @@ class UserModel():
         except Exception as ex:
             raise Exception(ex)
 
+    @classmethod
+    def delete_user(self, user):
+        try:
+            connection = get_connection()
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM usuarios WHERE id = %s", (user.id,))
+                affected_rows = cursor.rowcount
+                connection.commit()
+
+            connection.close()
+            return affected_rows
+        except Exception as ex:
+            raise Exception(ex)
     # @classmethod
     # def update_user(cls, user):
     #     try:
@@ -149,19 +164,3 @@ class UserModel():
     #         return affected_rows
     #     except Exception as ex:
     #         raise Exception(ex)
-
-    @classmethod
-    def delete_user(self, user):
-        try:
-            connection = get_connection()
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "DELETE FROM usuarios WHERE id = %s", (user.id,))
-                affected_rows = cursor.rowcount
-                connection.commit()
-
-            connection.close()
-            return affected_rows
-        except Exception as ex:
-            raise Exception(ex)

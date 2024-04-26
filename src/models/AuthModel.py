@@ -16,7 +16,7 @@ class AuthModel():
             row = cursor.fetchone()
             if row != None:
                 user = User(row[0], row[1], User.check_password(
-                    row[2], user.password), row[3], row[4], row[5],row[6],row[7],row[8])
+                    row[2], user.password), row[3], row[4], row[5],row[6],row[7],row[8],row[9],row[10])
 
                 access_token = create_access_token(identity=user.id)
                 user = user.to_JSON()

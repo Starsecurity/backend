@@ -9,7 +9,7 @@ from models.UserModel import UserModel
 
 main = Blueprint("user_blueprint", __name__)
 
-@main.route('/')
+@main.route('')
 @jwt_required()
 def get_users():
 
@@ -39,7 +39,6 @@ def get_user(cedula):
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 
-
 @main.route('add', methods=['POST'])
 @jwt_required(optional=True)
 def add_user():
@@ -59,10 +58,12 @@ def add_user():
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
             default_role = "usuario"
+            delante_cedula = request.json.get("delante_cedula")
+            reverso_cedula = request.json.get("reverso_cedula")
 
             id = uuid.uuid4()
             user = User(str(id), username, password, nombre_completo,
-                        cedula, telefono, foto_perfil, huella, default_role)
+                        cedula, telefono, foto_perfil, huella, default_role,delante_cedula,reverso_cedula)
 
             affected_rows = UserModel.add_user(user)
 
@@ -75,22 +76,24 @@ def add_user():
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 
-
 @main.route('update/<id>', methods=['PUT'])
 @jwt_required()
 def update_user(id):
+    
     try:
-        username = request.json['name']
-        password = request.json['password']
-        nombre_completo = request.json['nombre_completo']
-        cedula = request.json['cedula']
-        telefono = int(request.json['telefono'])
-        huella = request.json['fingerprint']
-        foto_perfil = request.json['profilePhoto']
-        rol = request.json['rol']
+        username = request.json.get('name')
+        password = request.json.get('password')
+        nombre_completo = request.json.get('nombre_completo')
+        cedula = request.json.get('cedula')
+        telefono = int(request.json.get('telefono'))
+        huella = request.json.get('fingerprint')
+        foto_perfil = request.json.get('profilePhoto')
+        rol = request.json.get('rol')
+        delante_cedula = request.json.get('delante_cedula')
+        reverso_cedula = request.json.get('reverso_cedula')
 
         user = User(id, username, password, nombre_completo,
-                    cedula, telefono, foto_perfil, huella,rol)
+                    cedula, telefono, foto_perfil, huella,rol,delante_cedula,reverso_cedula)
 
         affected_rows = UserModel.update_user(user)
 
@@ -101,7 +104,6 @@ def update_user(id):
 
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
-
 
 @main.route('delete/<id>', methods=['DELETE'])
 @jwt_required()

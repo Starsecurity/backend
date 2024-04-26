@@ -22,9 +22,11 @@ def add_user():
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
         default_role = "usuario"
-            
+        delante_cedula = request.json['delante_cedula']
+        reverso_cedula = request.json['reverso_cedula']
+        
         id = uuid.uuid4()
-        user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella,default_role)
+        user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella,default_role,delante_cedula,reverso_cedula)
         
         affected_rows = UserModel.add_user(user)
         
