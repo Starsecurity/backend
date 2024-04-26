@@ -18,11 +18,11 @@ def add_user():
         nombre_completo = request.json['nombre_completo']
         cedula = request.json['cedula']
         telefono = int(request.json['telefono'])
-        huella = request.json['fingerprint']
-        foto_perfil = request.json['profilePhoto']
+        huella = request.json.get('fingerprint')
+        foto_perfil = request.json.get('profilePhoto')
         default_role = "usuario"
-        delante_cedula = request.json['delante_cedula']
-        reverso_cedula = request.json['reverso_cedula']
+        delante_cedula = request.json.get('delante_cedula')
+        reverso_cedula = request.json.get('reverso_cedula')
         
         id = uuid.uuid4()
         user = User(str(id), username, password, nombre_completo, cedula, telefono,foto_perfil,huella,default_role,delante_cedula,reverso_cedula)

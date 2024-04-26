@@ -10,7 +10,7 @@ from models.UserModel import UserModel
 main = Blueprint("user_blueprint", __name__)
 
 @main.route('')
-@jwt_required()
+@jwt_required(optional=True)
 def get_users():
 
     try:
@@ -27,7 +27,7 @@ def get_users():
 
 
 @main.route('<cedula>')
-@jwt_required()
+@jwt_required(optional=True)
 def get_user(cedula):
 
     try:
@@ -77,7 +77,7 @@ def add_user():
         return jsonify({'message': str(ex)}), 500
 
 @main.route('update/<id>', methods=['PUT'])
-@jwt_required()
+@jwt_required(optional=True)
 def update_user(id):
     
     try:
