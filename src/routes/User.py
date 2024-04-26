@@ -9,8 +9,8 @@ from models.UserModel import UserModel
 
 main = Blueprint("user_blueprint", __name__)
 
-@main.route('/')
-@jwt_required()
+@main.route('')
+@jwt_required(optional=True)
 def get_users():
 
     try:
@@ -27,7 +27,7 @@ def get_users():
 
 
 @main.route('<cedula>')
-@jwt_required()
+@jwt_required(optional=True)
 def get_user(cedula):
 
     try:
@@ -41,7 +41,7 @@ def get_user(cedula):
 
 
 @main.route('add', methods=['POST'])
-@jwt_required()
+@jwt_required(optional=True)
 def add_user():
 
     try:
@@ -59,10 +59,12 @@ def add_user():
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
             default_role = "usuario"
+            delante_cedula = request.json['delante_cedula']
+            reverso_cedula = request.json['reverso_cedula']
             
             id = uuid.uuid4()
             user = User(str(id),username, password, nombre_completo,
-                        cedula, telefono, foto_perfil, huella, default_role)
+                        cedula, telefono, foto_perfil, huella, default_role,delante_cedula,reverso_cedula)
             affected_rows = UserModel.add_user(user)
 
             if affected_rows == 1:
@@ -76,7 +78,7 @@ def add_user():
 
 
 @main.route('update/<id>', methods=['PUT'])
-@jwt_required()
+@jwt_required(optional=True)
 def update_user(id):
     try:
         user_kw=request.json
@@ -88,10 +90,12 @@ def update_user(id):
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
         default_role = "usuario"
+        delante_cedula = request.json['delante_cedula']
+        reverso_cedula = request.json['reverso_cedula']
 
         # Crear instancia de User con los parámetros en el orden correcto
         user = User(id, username, password, nombre_completo,
-            cedula, telefono, foto_perfil,huella, default_role)'''
+            cedula, telefono, foto_perfil,huella, default_role,delante_cedula,reverso_cedula)'''
         
         affected_rows = UserModel.update_user(id,**user_kw)
         print(affected_rows)
@@ -105,7 +109,7 @@ def update_user(id):
 
 
 @main.route('delete/<id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required(optional=True)
 def delete_user(id):
     try:
         user = User(id)
