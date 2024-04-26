@@ -2,6 +2,7 @@ from sqlalchemy.exc import IntegrityError
 from flask import jsonify
 from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash
+from database.db import session
 
 from .entities.User import User
 
@@ -11,23 +12,11 @@ class UserModel():
     @classmethod
     def get_users(cls):
         try:
-            connection = get_connection()
-            users = []
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM usuarios")
-                resultset = cursor.fetchall()
-
-                for row in resultset:
-                    user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
-                    users.append(user.to_JSON())
-
-            connection.close()
-            return users
+            users = session.query(User).all()
+            return [user.to_JSON() for user in users]
         except Exception as ex:
             raise Exception(ex)
+        
     @classmethod
     def get_user_by_id(cls, id):
         try:
@@ -41,7 +30,6 @@ class UserModel():
        
 
         try:
-        
             user = session.query(User).filter_by(cedula=cedula).first()
             return user.to_JSON() if user else None
         except Exception as ex:
@@ -51,7 +39,6 @@ class UserModel():
     def add_user(cls, user):
 
         try:
-
                 session.add(user)
                 session.commit()
                 return user.to_JSON()
@@ -65,16 +52,13 @@ class UserModel():
         try:
             query = session.query(User)
             user_db = query.filter(User.id == id).first()
-
             if user_db:
+
                 for key, value in kwargs.items():
                     # Verifica si el campo existe en el objeto de usuario y actualízalo
-                    if hasattr(user_db, key):
+                    if hasattr(user_db, key) is not None:
                         setattr(user_db, key, value)
-                    else:
-                        # Ignora campos que no existen en el objeto de usuario
-                        pass
-                    
+
                 session.commit()
                 updated_user = session.query(User).filter(User.id == id).first()
                 return updated_user.to_JSON()
@@ -136,7 +120,7 @@ class UserModel():
     @classmethod
     def delete_user(cls, user):
         try:
-            user = User.query.get(id)
+            user = session.query(User).get(id)
             if user:
                 session.delete(user)
                 session.commit()
