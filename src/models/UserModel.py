@@ -1,5 +1,3 @@
-from flask import jsonify
-from flask_jwt_extended import create_access_token
 from database.db import get_connection
 from werkzeug.security import generate_password_hash
 

@@ -58,8 +58,8 @@ def add_user():
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
             default_role = "usuario"
-            delante_cedula = request.json.get("delante_cedula")
-            reverso_cedula = request.json.get("reverso_cedula")
+            delante_cedula = request.json['delante_cedula']
+            reverso_cedula = request.json['reverso_cedula']
 
             id = uuid.uuid4()
             user = User(str(id), username, password, nombre_completo,
