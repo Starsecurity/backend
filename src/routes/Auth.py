@@ -2,7 +2,7 @@
 from flask import Blueprint, jsonify, request
 from models.AuthModel import AuthModel
 from models.entities.User import User
-from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity,unset_jwt_cookies, jwt_required, JWTManager
+from flask_jwt_extended import unset_jwt_cookies
 
 main = Blueprint("auth_blueprint", __name__)
 
