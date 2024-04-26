@@ -1,11 +1,12 @@
-from flask import Blueprint, jsonify , request
+# 
+from flask import Blueprint, jsonify, request
 from models.AuthModel import AuthModel
 from models.entities.User import User
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity,unset_jwt_cookies, jwt_required, JWTManager
 
 main = Blueprint("auth_blueprint", __name__)
 @main.route('/login', methods=['POST'])
-def auth():
+def login():
     try:
         # Obtener datos del usuario desde la solicitud JSON
         username = request.json.get('name')
@@ -22,9 +23,16 @@ def auth():
         return user_data
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
+<<<<<<< HEAD
 
+=======
+>>>>>>> 71dd4c8b7c3bb84c18cfa4e69aa3972554dbb185
     
-
+@main.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 # @api.after_request
 # def refresh_expiring_jwts(response):
@@ -43,5 +51,3 @@ def auth():
 #         # Case where there is not a valid JWT. Just return the original respone
 #         return response
 
-# @main.route('/login',methods=['POST'])
-#     def

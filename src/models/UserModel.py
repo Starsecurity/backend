@@ -2,8 +2,8 @@ from sqlalchemy.exc import IntegrityError
 from flask import jsonify
 from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash
-from database.db import session
-from models.entities.User import User
+
+from .entities.User import User
 
 
 class UserModel():
@@ -11,8 +11,21 @@ class UserModel():
     @classmethod
     def get_users(cls):
         try:
-            users = User.query.all()
-            return [user.to_JSON() for user in users]
+            connection = get_connection()
+            users = []
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT * FROM usuarios")
+                resultset = cursor.fetchall()
+
+                for row in resultset:
+                    user = User(row[0], row[1], row[2], row[3],
+                                row[4], row[5], row[6], row[7], row[8])
+                    users.append(user.to_JSON())
+
+            connection.close()
+            return users
         except Exception as ex:
             raise Exception(ex)
     @classmethod
@@ -80,7 +93,6 @@ class UserModel():
     #             # Inicializamos las partes de la consulta SQL
     #             update_query = "UPDATE usuarios SET "
     #             parameters = {}
-
     #             # Construimos dinámicamente la parte SET de la consulta SQL y los parámetros
     #             if user.username is not None:
     #                 update_query += "username = %s, "
@@ -104,7 +116,6 @@ class UserModel():
     #             if user.huella is not None:
     #                 update_query += "huella = %s, "
     #                 parameters['huella'] = user.huella
-
     #             # Verificamos si hay campos para actualizar
     #             if parameters:
     #                 update_query = update_query.rstrip(
@@ -117,7 +128,6 @@ class UserModel():
     #             else:
     #                 # Si no hay campos para actualizar, retornamos 0 filas afectadas
     #                 affected_rows = 0
-
     #         connection.close()
     #         return affected_rows
     #     except Exception as ex:

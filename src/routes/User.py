@@ -1,3 +1,4 @@
+#User.py
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 import uuid
@@ -7,7 +8,6 @@ from models.entities.User import User
 from models.UserModel import UserModel
 
 main = Blueprint("user_blueprint", __name__)
-
 
 @main.route('/')
 @jwt_required()
@@ -45,7 +45,6 @@ def get_user(cedula):
 def add_user():
 
     try:
-
         current_user_id = get_jwt_identity()
         user = UserModel.get_user_by_id(current_user_id)
         current_user_role = user['rol']

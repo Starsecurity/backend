@@ -1,14 +1,17 @@
+#Register.py
 from flask import Blueprint, jsonify, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
+
 import uuid
 
 from models.entities.User import User
 from models.UserModel import UserModel
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 main = Blueprint("register_blueprint", __name__)
 
-@main.route('/', methods=['POST', 'OPTIONS'])
+@main.route('', methods=['POST'])
 def add_user():
     try:
         # Generar un ID único para el usuario

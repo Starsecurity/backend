@@ -12,7 +12,7 @@ app = Flask(__name__)
 db.init_db()
 jwt = JWTManager(app)
 
-CORS(app,resources={"*":{"origins":"http://localhost:3000"}})
+CORS(app,resources={"*":{"origins":"*"}})
 
 def page_not_found(error):
     return "<h1>Not found page</h1>", 404
