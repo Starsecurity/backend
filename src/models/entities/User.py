@@ -1,9 +1,28 @@
+from flask import session
+from sqlalchemy import Column, Enum, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import check_password_hash
 
-class User():
+Base = declarative_base()
 
-    def __init__(self, id, username=None, password = None, nombre_completo = None, cedula = None, telefono = None, foto_perfil = None, huella = None, rol = None) -> None:
-        self.id = id
+class RolEnum(Enum):
+    ADMINISTRADOR = 'administrador'
+    USUARIO = 'usuario'
+
+class User(Base):
+    __tablename__='usuarios'
+    id = Column(String, primary_key=True)
+    username = Column(String, nullable=False)
+    password = Column(String, nullable=False)
+    nombre_completo = Column(String, nullable=False)   
+    cedula = Column(String, nullable=False)  # Puedes agregar 'unique=True' aquí si deseas
+    telefono = Column(Integer, nullable=False) 
+    foto_perfil = Column(String, nullable=True)
+    huella = Column(String, nullable=True)
+    rol = Column(Enum('usuario', 'administrador', name='rol_enum'), nullable=False)
+
+    def __init__(self, id,username, password, nombre_completo, cedula, telefono, foto_perfil, huella, rol):
+        self.id=id
         self.username = username
         self.password = password
         self.nombre_completo = nombre_completo
@@ -12,21 +31,21 @@ class User():
         self.foto_perfil = foto_perfil
         self.huella = huella
         self.rol = rol
-    
+
+
     def to_JSON(self):
         return {
-            'id' :  self.id,
-            'name' : self.username,
-            'password' :  self.password,
-            'nombre_completo' :  self.nombre_completo,
-            'cedula' :  self.cedula,
-            'telefono' : self.telefono,
+            'id': self.id,
+            'name': self.username,
+            'password': self.password,
+            'nombre_completo': self.nombre_completo,
+            'cedula': self.cedula,
+            'telefono': self.telefono,
             'profilePhoto': self.foto_perfil,
-            'fingerprint' : self.huella,
-            'rol' : self.rol
+            'fingerprint': self.huella,
+            'rol': self.rol
         }
-    
-    @classmethod
-    def check_password(self, hashed_password, password):
-        return check_password_hash(hashed_password, password)
-    
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+

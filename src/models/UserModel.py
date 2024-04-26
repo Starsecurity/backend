@@ -1,106 +1,75 @@
+from sqlalchemy.exc import IntegrityError
 from flask import jsonify
 from flask_jwt_extended import create_access_token
-from database.db import get_connection
 from werkzeug.security import generate_password_hash
-
-from .entities.User import User
+from database.db import session
+from models.entities.User import User
 
 
 class UserModel():
 
     @classmethod
-    def get_users(self):
+    def get_users(cls):
         try:
-            connection = get_connection()
-            users = []
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM usuarios")
-                resultset = cursor.fetchall()
-
-                for row in resultset:
-                    user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
-                    users.append(user.to_JSON())
-
-            connection.close()
-            return users
+            users = User.query.all()
+            return [user.to_JSON() for user in users]
+        except Exception as ex:
+            raise Exception(ex)
+    @classmethod
+    def get_user_by_id(cls, id):
+        try:
+            user = session.query(User).get(id)
+            return user.to_JSON() if user else None
         except Exception as ex:
             raise Exception(ex)
 
     @classmethod
-    def get_user_by_id(self, id):
+    def get_user(cls, cedula):
+       
+
         try:
-            connection = get_connection()
-            
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM usuarios WHERE id = %s", (id,))
-                row = cursor.fetchone()
-                
-                user = None
-                if row != None:
-                    user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
-                    user = user.to_JSON()
-
-            connection.close()
-            return user
-        except Exception as ex:
-            raise Exception(ex)
-    
-    @classmethod
-    def get_user(self, cedula):
-        try:
-            connection = get_connection()
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM usuarios WHERE cedula = %s", (cedula,))
-                row = cursor.fetchone()
-
-                user = None
-                if row != None:
-                    user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
-                    user = user.to_JSON()
-
-            connection.close()
-            return user
+        
+            user = session.query(User).filter_by(cedula=cedula).first()
+            return user.to_JSON() if user else None
         except Exception as ex:
             raise Exception(ex)
 
     @classmethod
-    def add_user(self, user):
+    def add_user(cls, user):
+
         try:
-            connection = get_connection()
 
-            with connection.cursor() as cursor:
-                cursor.execute("""INSERT INTO usuarios (id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella,rol) 
-                                VALUES (%s,%s, %s, %s, %s,%s,%s,%s,%s)""", (user.id, user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono, user.foto_perfil, user.huella, user.rol))
-                affected_rows = cursor.rowcount
-                connection.commit()
-
-            connection.close()
-            return affected_rows
+                session.add(user)
+                session.commit()
+                return user.to_JSON()
         except Exception as ex:
+            session.rollback()
+            print(ex)
             raise Exception(ex)
-
     @classmethod
-    def update_user(self, user):
+
+    def update_user(cls, id, **kwargs):
         try:
-            connection = get_connection()
+            query = session.query(User)
+            user_db = query.filter(User.id == id).first()
 
-            with connection.cursor() as cursor:
-                cursor.execute("""UPDATE usuarios SET username = %s, password = %s , nombre_completo = %s, cedula = %s, telefono = %s, foto_perfil = %s,huella = %s, rol=%s WHERE id = %s""", (
-                    user.username, generate_password_hash(user.password), user.nombre_completo,  user.cedula, user.telefono, user.foto_perfil, user.huella,user.rol, user.id))
-                affected_rows = cursor.rowcount
-                connection.commit()
+            if user_db:
+                for key, value in kwargs.items():
+                    # Verifica si el campo existe en el objeto de usuario y actualízalo
+                    if hasattr(user_db, key):
+                        setattr(user_db, key, value)
+                    else:
+                        # Ignora campos que no existen en el objeto de usuario
+                        pass
+                    
+                session.commit()
+                updated_user = session.query(User).filter(User.id == id).first()
+                return updated_user.to_JSON()
 
-            connection.close()
-            return affected_rows
+            else:
+                return None
         except Exception as ex:
+            session.rollback()
             raise Exception(ex)
 
     # @classmethod
@@ -155,17 +124,15 @@ class UserModel():
     #         raise Exception(ex)
 
     @classmethod
-    def delete_user(self, user):
+    def delete_user(cls, user):
         try:
-            connection = get_connection()
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "DELETE FROM usuarios WHERE id = %s", (user.id,))
-                affected_rows = cursor.rowcount
-                connection.commit()
-
-            connection.close()
-            return affected_rows
+            user = User.query.get(id)
+            if user:
+                session.delete(user)
+                session.commit()
+                return id
+            else:
+                return None
         except Exception as ex:
+            session.rollback()
             raise Exception(ex)

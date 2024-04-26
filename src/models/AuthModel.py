@@ -1,44 +1,32 @@
 from flask import jsonify
 from flask_jwt_extended import create_access_token
-from database.db import get_connection
-from .entities.User import User
+from models.entities.User import User
+from database.db import session
 
 
-class AuthModel():
-
+class AuthModel:
+        
     @classmethod
-    def login(self, user):
+    def login(cls, username, password):
         try:
-            cursor = get_connection().cursor()
-            sql = """SELECT * FROM usuarios
-                    WHERE username = '{}'""".format(user.username)
-            cursor.execute(sql)
-            row = cursor.fetchone()
-            if row != None:
-                user = User(row[0], row[1], User.check_password(
-                    row[2], user.password), row[3], row[4], row[5],row[6],row[7],row[8])
-
-                access_token = create_access_token(identity=user.id)
-                user = user.to_JSON()
-                
-                return jsonify({'token': access_token, 'user': user})
+            query = session.query(User)
+            user_from_db = query.filter_by(username=username).first()
+            if user_from_db and user_from_db.check_password(password):
+                access_token = create_access_token(identity=user_from_db.id)
+                user_json = user_from_db.to_JSON()
+                return jsonify({'token': access_token, 'user': user_json})
             else:
-                return None
+                return jsonify({'message': 'Invalid username or password'}), 401
         except Exception as ex:
             raise Exception(ex)
 
     @classmethod
-    def user_role(self, user):
+    def user_role(cls, user):
         try:
-            cursor = get_connection().cursor()
-            sql = """SELECT * FROM usuarios 
-                    WHERE username = '{}'""".format(user.username)
-            cursor.execute(sql)
-            row = cursor.fetchone()
-            
-            if row != None:
-                role = User(user.rol)
-                return jsonify({'rol': role})
+            query = session.query(user)
+            user_from_db = query.filter_by(username=user.username).first()
+            if user_from_db:
+                return jsonify({'role': user_from_db.rol})
             else:
                 return None, 400
         except Exception as ex:

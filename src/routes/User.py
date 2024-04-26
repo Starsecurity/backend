@@ -60,11 +60,10 @@ def add_user():
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
             default_role = "usuario"
-
+            
             id = uuid.uuid4()
-            user = User(str(id), username, password, nombre_completo,
+            user = User(str(id),username, password, nombre_completo,
                         cedula, telefono, foto_perfil, huella, default_role)
-
             affected_rows = UserModel.add_user(user)
 
             if affected_rows == 1:
@@ -81,22 +80,24 @@ def add_user():
 @jwt_required()
 def update_user(id):
     try:
-        username = request.json['name']
+        user_kw=request.json
+        '''username = request.json['name']
         password = request.json['password']
         nombre_completo = request.json['nombre_completo']
         cedula = request.json['cedula']
         telefono = int(request.json['telefono'])
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
-        rol = request.json['rol']
+        default_role = "usuario"
 
+        # Crear instancia de User con los parámetros en el orden correcto
         user = User(id, username, password, nombre_completo,
-                    cedula, telefono, foto_perfil, huella,rol)
-
-        affected_rows = UserModel.update_user(user)
-
-        if affected_rows == 1:
-            return jsonify(user.cedula)
+            cedula, telefono, foto_perfil,huella, default_role)'''
+        
+        affected_rows = UserModel.update_user(id,**user_kw)
+        print(affected_rows)
+        if affected_rows != 0:
+            return jsonify({"message":"Modificacion"'''user.cedula'''}),200
         else:
             return jsonify({'message': "No user updated"}), 404
 
@@ -112,7 +113,7 @@ def delete_user(id):
 
         affected_rows = UserModel.delete_user(user)
 
-        if affected_rows == 1:
+        if affected_rows != 1:
             return jsonify(user.id)
         else:
             return jsonify({'message': "No user deleted"}), 404
