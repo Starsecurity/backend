@@ -1,9 +1,24 @@
 import cv2
-from flask import jsonify
+import requests
+import numpy as np
 from skimage.metrics import structural_similarity as ssim
 
 class IaModel():
     
+    @classmethod
+    def transforma_en_imagen(self, url):
+        # Comprobar si la solicitud fue exitosa
+        response = requests.get(url)
+        if response.status_code == 200:
+            # Leer los datos de la respuesta como bytes
+            image_bytes = response.content
+            # Convertir los bytes a un objeto numpy para OpenCV
+            nparr = np.frombuffer(image_bytes, np.uint8)
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            return image
+        else:
+            return None, 404
+
     @classmethod
     def comparar_bordes(self, fingerprint, reverso_cedula):
         # Convertir imágenes a escala de grises

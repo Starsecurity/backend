@@ -106,7 +106,7 @@ def update_user(id):
         return jsonify({'message': str(ex)}), 500
 
 @main.route('delete/<id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required(optional=True)
 def delete_user(id):
     try:
         user = User(id)

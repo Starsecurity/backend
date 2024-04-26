@@ -77,7 +77,7 @@ class UserModel():
 
             with connection.cursor() as cursor:
                 cursor.execute("""INSERT INTO usuarios (id, username, password, nombre_completo, cedula, telefono, foto_perfil, huella,rol,delante_cedula,reverso_cedula) 
-                                VALUES (%s,%s, %s, %s, %s,%s,%s,%s,%s,%s,%s)""", (user.id, user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono, user.foto_perfil, user.huella, user.rol,user.delante_cedula,user.delante_cedula))
+                                VALUES (%s,%s, %s, %s, %s,%s,%s,%s,%s,%s,%s)""", (user.id, user.username, generate_password_hash(user.password), user.nombre_completo, user.cedula, user.telefono, user.foto_perfil, user.huella, user.rol,user.delante_cedula,user.reverso_cedula))
                 affected_rows = cursor.rowcount
                 connection.commit()
 
