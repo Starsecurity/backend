@@ -3,7 +3,6 @@ from flask_jwt_extended import create_access_token
 from models.entities.User import User
 from database.db import session
 
-
 class AuthModel:
         
     @classmethod

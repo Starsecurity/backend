@@ -39,9 +39,9 @@ class UserModel():
     def add_user(cls, user):
 
         try:
-                session.add(user)
-                session.commit()
-                return user.to_JSON()
+            session.add(user)
+            session.commit()
+            return user.to_JSON()
         except Exception as ex:
             session.rollback()
             print(ex)
