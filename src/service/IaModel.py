@@ -7,8 +7,11 @@ class IaModel():
     
     @classmethod
     def transforma_en_imagen(self, url):
+        
         # Comprobar si la solicitud fue exitosa
-        response = requests.get(url)
+        headers = {'Origin': 'https://localhost:3000/'}
+        response = requests.get(url,headers=headers)
+        
         if response.status_code == 200:
             # Leer los datos de la respuesta como bytes
             image_bytes = response.content
