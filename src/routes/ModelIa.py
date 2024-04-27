@@ -9,7 +9,6 @@ main = Blueprint("model_blueprint", __name__)
 @jwt_required(optional=True)
 def porcentajes(cedula):
     try:
-        
         user = UserModel.get_user(cedula)
         
         if user == None:
