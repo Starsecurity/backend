@@ -1,5 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 from flask import jsonify
+from database.db import session
 from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash
 
@@ -7,25 +8,11 @@ from .entities.User import User
 
 
 class UserModel():
-
     @classmethod
     def get_users(cls):
         try:
-            connection = get_connection()
-            users = []
-
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM usuarios")
-                resultset = cursor.fetchall()
-
-                for row in resultset:
-                    user = User(row[0], row[1], row[2], row[3],
-                                row[4], row[5], row[6], row[7], row[8])
-                    users.append(user.to_JSON())
-
-            connection.close()
-            return users
+            users = session.query(User).all()
+            return [user.to_JSON() for user in users]
         except Exception as ex:
             raise Exception(ex)
     @classmethod
@@ -51,13 +38,11 @@ class UserModel():
     def add_user(cls, user):
 
         try:
-
-                session.add(user)
-                session.commit()
-                return user.to_JSON()
+            session.add(user)
+            session.commit()
+            return user.to_JSON()
         except Exception as ex:
             session.rollback()
-            print(ex)
             raise Exception(ex)
     @classmethod
 
@@ -82,7 +67,7 @@ class UserModel():
             else:
                 return None
         except Exception as ex:
-            session.rollback()
+            print("Estoy en ex")
             raise Exception(ex)
 
     # @classmethod

@@ -23,10 +23,6 @@ def login():
         return user_data
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
-<<<<<<< HEAD
-
-=======
->>>>>>> 71dd4c8b7c3bb84c18cfa4e69aa3972554dbb185
     
 @main.route("/logout", methods=["POST"])
 def logout():
