@@ -50,10 +50,14 @@ class IaModel():
         # Variables para el entrenamiento
         face_images = []
         labels = []
-
+        # Procesar los rostros en la primera imagen y entrenar el reconocedor
+        if len(faces1) == 0:
+            print("Error: No se encontraron rostros en la 1 imagen para entrenar el reconocedor")
+            return None
+        if len(faces2) == 0:
+            print("Error: No se encontraron rostros en la 2 imagen para entrenar el reconocedor")
+            return None
         # Comparar los rostros en la segunda imagen con los rostros en la primera imagen
-        matches = 0
-        total_faces = 0
 
         # Procesar los rostros en la primera imagen y entrenar el reconocedor
         # Entrenar el reconocedor con la primera imagen y las coordenadas de los rostros detectados
@@ -61,6 +65,7 @@ class IaModel():
 
 
         for (x, y, w, h) in faces1:
+            print("Estoy en el for de faces1")
             roi_gray = gray1[y:y+h, x:x+w]
             face_images.append(cv2.resize(roi_gray, (100, 100)))  # Redimensionar las imágenes para el entrenamiento
             labels.append(1)  # Etiqueta para la imagen de referencia
@@ -69,10 +74,14 @@ class IaModel():
         '''if len(face_images) == 0:
             print("Error: No se encontraron rostros en la primera imagen para entrenar el reconocedor")
         return None'''
-            
-        #recognizer.train(face_images, np.array(labels))
+        #print(face_images)
+        recognizer.train(face_images, np.array(labels))
+
+        matches = 0
+        total_faces=0
             # Comparar los rostros en la segunda imagen
         for (x2, y2, w2, h2) in faces2:
+            
             total_faces += 1
             roi_gray_resized = cv2.resize(gray2[y2:y2+h2, x2:x2+w2], (100, 100))  # Redimensionar la imagen de prueba                recognizer.update([roi_gray_resized], np.array([1]))  # Actualizar el reconocedor con cada rostro
             label, confidence = recognizer.predict(roi_gray_resized)
@@ -80,12 +89,7 @@ class IaModel():
             # Incrementar el contador de coincidencias si el reconocimiento es exitoso
             if confidence < 2000:  # Ajustar este umbral según sea necesario
                 matches += 1
-        # Mostrar las imágenes con los rectángulos dibujados
-        cv2.imshow('Rostros en la primera imagen', img1)
-        cv2.imshow('Rostros en la segunda imagen', img2)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
         # Calcular el porcentaje de compatibilidad
-        compatibility_percentage = (matches / total_faces) * 100 if total_faces > 0 else 0
+        compatibility_percentage = (matches / total_faces) * 100 if total_faces > 0 else 70
         return compatibility_percentage
 

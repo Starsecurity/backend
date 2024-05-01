@@ -22,12 +22,10 @@ def porcentajes(id):
         if user == None:
             return  jsonify({'message': "El usuario con el id no existe"}), 404
         
-        print(user['fingerprint'])
-        print(user['reverso_cedula'])
         huella = IaModel.transforma_en_imagen(user['fingerprint'])
         huella_cedula = IaModel.transforma_en_imagen(user['reverso_cedula'])
         foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
-        foto_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
+        delante_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
 
         
         
@@ -41,7 +39,7 @@ def porcentajes(id):
         cv2.waitKey(0)
         cv2.destroyAllWindows()'''
 
-        compatibility_percentage= IaModel.comparar_rostros(foto_perfil,foto_cedula)
+        compatibility_percentage= IaModel.comparar_rostros(foto_perfil,delante_cedula)
         similarity = IaModel.comparar_bordes(huella, huella_cedula)
         return jsonify({'porcentaje_huella':similarity,
                         'porcentaje_rostro':compatibility_percentage})
