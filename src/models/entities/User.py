@@ -20,10 +20,8 @@ class User(Base):
     foto_perfil = Column(String, nullable=True)
     huella = Column(String, nullable=True)
     rol = Column(Enum('usuario', 'administrador', name='rol_enum'), nullable=False)
-    delante_cedula =Column(String,nullable=True)
-    reverso_cedula = Column(String,nullable=True)
 
-    def __init__(self, id,username, password, nombre_completo, cedula, telefono, foto_perfil, huella, rol,delante_cedula,reverso_cedula):
+    def __init__(self, id,username, password, nombre_completo, cedula, telefono, foto_perfil, huella, rol):
         self.id=id
         self.username = username
         self.password = password
@@ -47,9 +45,7 @@ class User(Base):
             'telefono': self.telefono,
             'profilePhoto': self.foto_perfil,
             'fingerprint': self.huella,
-            'rol': self.rol,
-            'delante_cedula':self.delante_cedula,
-            'reverso_cedula' : self.reverso_cedula
+            'rol': self.rol
         }
 
     def check_password(self, password):

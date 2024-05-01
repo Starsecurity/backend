@@ -26,13 +26,15 @@ def add_user():
         huella = request.json['fingerprint']
         foto_perfil = request.json['profilePhoto']
         default_role = "usuario"
+        delante_cedula = request.json.get('delante_cedula')
+        reverso_cedula = request.json.get('reverso_cedula')
 
         '''cedula_prueba = UserModel.get_user(cedula)'''
         cedula_prueba = UserModel.get_user(cedula)
         if cedula_prueba is not None:
            return jsonify({'message':'La cedula ya existe'}),409
         # Crear la instancia de User con el ID generado
-        user = User( str(id),username, password, nombre_completo, cedula, telefono, foto_perfil, huella, default_role)
+        user = User( str(id),username, password, nombre_completo, cedula, telefono, foto_perfil, huella, default_role,delante_cedula,reverso_cedula)
         #user.id = str(id)
 
         # Agregar el usuario a la base de datos

@@ -18,7 +18,6 @@ class IaModel():
             return image
         else:
             return None, 404
-
     
     @classmethod
     def comparar_bordes(self, fingerprint, reverso_cedula):
@@ -34,33 +33,16 @@ class IaModel():
         similarity = ssim(edges1, edges2)
         
         return similarity
-
-
-
     @classmethod
-    def comparar_rostros(cls,img1_path, img2_path):
-        # Cargar el clasificador preentrenado para detectar rostros
+    def comparar_rostros(self, profilePhoto, delante_cedula):
         face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-        # Cargar las imágenes a comparar
-        img1 = img1_path
-        img2 = img2_path
-
-        # Verificar que las imágenes se han cargado correctamente
-        if img1 is None or img2 is None:
-            print("Error: No se pudieron cargar las imágenes")
-            return None
-
         # Convertir las imágenes a escala de grises
-        gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-        gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
-
+        gray1 = cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY)
+        gray2 = cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY)
+        
         # Detectar rostros en ambas imágenes
         faces1 = face_cascade.detectMultiScale(gray1, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
         faces2 = face_cascade.detectMultiScale(gray2, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-        '''if len(faces1) == 0:
-            print("Error: No se detectaron rostros en la primera imagen")
-        return None'''
 
         # Inicializar el reconocedor
         recognizer = cv2.face.EigenFaceRecognizer_create()
@@ -74,10 +56,15 @@ class IaModel():
         total_faces = 0
 
         # Procesar los rostros en la primera imagen y entrenar el reconocedor
+        # Entrenar el reconocedor con la primera imagen y las coordenadas de los rostros detectados
+
+
+
         for (x, y, w, h) in faces1:
             roi_gray = gray1[y:y+h, x:x+w]
             face_images.append(cv2.resize(roi_gray, (100, 100)))  # Redimensionar las imágenes para el entrenamiento
             labels.append(1)  # Etiqueta para la imagen de referencia
+
             
         '''if len(face_images) == 0:
             print("Error: No se encontraron rostros en la primera imagen para entrenar el reconocedor")

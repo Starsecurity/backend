@@ -1,5 +1,6 @@
 import cv2
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify,request
+
 from models.UserModel import UserModel
 from models.AuthModel import AuthModel
 from models.entities.User import User
@@ -12,19 +13,22 @@ main = Blueprint("model_blueprint", __name__)
 @jwt_required(optional=True)
 def porcentajes(id):
     # Utilizar el modelo entrenado para comparar rostros    
+
     try:
         
         user = UserModel.get_user_by_id(id)
         
-        
+
         if user == None:
             return  jsonify({'message': "El usuario con el id no existe"}), 404
         
-
+        print(user['fingerprint'])
+        print(user['reverso_cedula'])
         huella = IaModel.transforma_en_imagen(user['fingerprint'])
         huella_cedula = IaModel.transforma_en_imagen(user['reverso_cedula'])
         foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
         foto_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
+
         
         
         ''' Imagenes_entrenar = [cv2.imread('C:\\Users\\JHOJAN\\Desktop\\UNICAUCA\\UNICAUCA LAB_IV ELECTRONICA\\Back_Reconocimiento\\backend\\src\\service\\Entrenamiento\\imagen1.jpg'),
