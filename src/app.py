@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from config import config 
 
 from models.entities.User import Base
-from routes import Auth, User , Register
+from routes import Auth, ModelIa, User , Register
 from database import db
 
 app = Flask(__name__)
