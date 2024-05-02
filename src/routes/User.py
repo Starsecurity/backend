@@ -44,11 +44,11 @@ def get_user(cedula):
 def add_user():
 
     try:
-        current_user_id = get_jwt_identity()
-        user = UserModel.get_user_by_id(current_user_id)
-        current_user_role = user['rol']
+        # current_user_id = get_jwt_identity()
+        # user = UserModel.get_user_by_id(current_user_id)
+        # current_user_role = user['rol']
 
-        if current_user_role == "administrador":
+        # if current_user_role == "administrador":
 
             username = request.json['name']
             password = request.json['password']
@@ -58,7 +58,7 @@ def add_user():
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
             default_role = "usuario"
-            delante_cedula = request.json.get['delante_cedula']
+            delante_cedula = request.json['delante_cedula']
             reverso_cedula = request.json['reverso_cedula']
 
             id = uuid.uuid4()
@@ -71,8 +71,8 @@ def add_user():
                 return user.to_JSON()
             else:
                 return jsonify({'message': "Error on insert"}), 500
-        else:
-            return jsonify({'message': "Unauthorize"}), 404
+        # else:
+        #     return jsonify({'message': "Unauthorize"}), 404
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 
@@ -85,7 +85,7 @@ def update_user(id):
         password = request.json.get('password')
         nombre_completo = request.json.get('nombre_completo')
         cedula = request.json.get('cedula')
-        telefono = int(request.json.get('telefono'))
+        telefono = request.json.get('telefono')
         huella = request.json.get('fingerprint')
         foto_perfil = request.json.get('profilePhoto')
         rol = request.json.get('rol')

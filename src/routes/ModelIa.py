@@ -16,9 +16,13 @@ def porcentajes(cedula):
         
         huella = IaModel.transforma_en_imagen(user['fingerprint'])
         huella_cedula = IaModel.transforma_en_imagen(user['reverso_cedula'])
-        
+        foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
+        delante_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
+
+        compatibility_percentage= IaModel.comparar_rostros(foto_perfil,delante_cedula)
         similarity = IaModel.comparar_bordes(huella, huella_cedula)
-        return jsonify({'porcentaje_huella':similarity})
+        return jsonify({'porcentaje_huella':similarity,
+                        'porcentaje_rostro':compatibility_percentage})
     
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500

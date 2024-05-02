@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 
 from config import config 
 
-from routes import Auth, User , Register, ModelIa
+from routes import Auth, User , Register, ModelIa, Antecendes
 
 app = Flask(__name__)
 jwt = JWTManager(app)
@@ -21,6 +21,7 @@ if __name__ == '__main__':
     app.register_blueprint(Auth.main, url_prefix='/auth')
     app.register_blueprint(User.main, url_prefix='/api/user')
     app.register_blueprint(ModelIa.main, url_prefix='/model')
+    app.register_blueprint(Antecendes.main, url_prefix='/antecedentes')
     
     app.register_error_handler(404,page_not_found)
     app.run()

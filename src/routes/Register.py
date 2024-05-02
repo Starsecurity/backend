@@ -17,7 +17,7 @@ def add_user():
         password = request.json['password']
         nombre_completo = request.json['nombre_completo']
         cedula = request.json['cedula']
-        telefono = int(request.json['telefono'])
+        telefono = request.json['telefono']
         huella = request.json.get('fingerprint')
         foto_perfil = request.json.get('profilePhoto')
         default_role = "usuario"
