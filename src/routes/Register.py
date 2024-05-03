@@ -54,7 +54,7 @@ def add_user(id):
         print("Estoy en ex")
         return jsonify({'message': str(ex)}), 500
 
-@main.route('addsession', methods=['POST'])
+@main.route('', methods=['POST'])
 def add_user_session():
     try:
         # Generar un ID único para el usuario
