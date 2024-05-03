@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required
 
 main = Blueprint("model_blueprint", __name__)
 
-@main.route('/similarity/<id>', methods=['POST'])
+@main.route('/similarity/<id>', methods=['GET'])
 @jwt_required(optional=True)
 def porcentajes(id):
     # Utilizar el modelo entrenado para comparar rostros    
