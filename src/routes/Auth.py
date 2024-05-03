@@ -1,7 +1,7 @@
 # 
 from flask import Blueprint, jsonify, request
 from models.AuthModel import AuthModel
-from models.entities.User import User
+from models.entities.User import UserSession,Users
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity,unset_jwt_cookies, jwt_required, JWTManager
 
 main = Blueprint("auth_blueprint", __name__)
@@ -11,9 +11,9 @@ def login():
         # Obtener datos del usuario desde la solicitud JSON
         username = request.json.get('name')
         password = request.json.get('password')
-
         # Verificar que se hayan proporcionado tanto el nombre de usuario como la contraseña
-        if not username or not password:
+        if  not username or not password:
+            print("Estoy en if")
             return jsonify({'message': 'Missing username or password'}), 400
 
         # Llamar a la función login de AuthModel pasando el username y password

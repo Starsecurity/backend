@@ -1,9 +1,9 @@
 #User.py
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from flask_jwt_extended import get_jwt_identity, jwt_required
 import uuid
 
-from models.entities.User import User
+from models.entities.User import UserSession,Users
 
 from models.UserModel import UserModel
 
@@ -51,20 +51,18 @@ def add_user():
 
         if current_user_role == "administrador":
 
-            username = request.json['name']
-            password = request.json['password']
             nombre_completo = request.json['nombre_completo']
             cedula = request.json['cedula']
             telefono = int(request.json['telefono'])
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
-            default_role = "usuario"
-            delante_cedula = request.json['delante_cedula']
+            delante_cedula =request.json['delante_cedula']
             reverso_cedula = request.json['reverso_cedula']
+            user_session_id = session.get('user_id')  # Ejemplo, asumiendo que tienes el ID de usuario almacenado en la sesión
             
-            id = uuid.uuid4()
-            user = User(str(id),username, password, nombre_completo,
-                        cedula, telefono, foto_perfil, huella, default_role,delante_cedula,reverso_cedula)
+            id_user = uuid.uuid4()
+            user = Users(str(id_user),nombre_completo,
+                        cedula, telefono, foto_perfil, huella,delante_cedula,reverso_cedula,user_session_id)
             affected_rows = UserModel.add_user(user)
 
             if affected_rows == 1:
@@ -82,20 +80,6 @@ def add_user():
 def update_user(id):
     try:
         user_kw=request.json
-        '''username = request.json['name']
-        password = request.json['password']
-        nombre_completo = request.json['nombre_completo']
-        cedula = request.json['cedula']
-        telefono = int(request.json['telefono'])
-        huella = request.json['fingerprint']
-        foto_perfil = request.json['profilePhoto']
-        default_role = "usuario"
-        delante_cedula = request.json['delante_cedula']
-        reverso_cedula = request.json['reverso_cedula']
-
-        # Crear instancia de User con los parámetros en el orden correcto
-        user = User(id, username, password, nombre_completo,
-            cedula, telefono, foto_perfil,huella, default_role,delante_cedula,reverso_cedula)'''
         
         affected_rows = UserModel.update_user(id,**user_kw)
         print(affected_rows)
@@ -112,7 +96,7 @@ def update_user(id):
 @jwt_required(optional=True)
 def delete_user(id):
     try:
-        user = User(id)
+        user = Users(id)
 
         affected_rows = UserModel.delete_user(user)
 

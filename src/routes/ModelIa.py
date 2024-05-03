@@ -2,8 +2,6 @@ import cv2
 from flask import Blueprint, jsonify,request
 
 from models.UserModel import UserModel
-from models.AuthModel import AuthModel
-from models.entities.User import User
 from service.IaModel import IaModel
 from flask_jwt_extended import jwt_required
 
