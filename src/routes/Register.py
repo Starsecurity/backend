@@ -7,7 +7,6 @@ import uuid
 from models.entities.User import Users,UserSession
 from models.UserModel import UserModel
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 main = Blueprint("register_blueprint", __name__)
 
