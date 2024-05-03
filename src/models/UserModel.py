@@ -58,7 +58,7 @@ class UserModel():
                         setattr(user_db, key, value)
 
                 session.commit()
-                updated_user = session.query(Users).filter(Users.id == id).first()
+                updated_user = session.query(Users).filter(Users.id_user == id).first()
                 return updated_user.to_JSON()
 
             else:
@@ -114,6 +114,7 @@ class UserModel():
         try:
             query = session.query(UserSession)
             user_db = query.filter(UserSession.id == id).first()
+            print(user_db.id)
             if user_db:
 
                 for key, value in kwargs.items():
@@ -129,6 +130,7 @@ class UserModel():
                 return None
         except Exception as ex:
             print("Estoy en ex")
+            session.rollback()
             raise Exception(ex)
 
     @classmethod

@@ -74,19 +74,36 @@ def add_user():
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 
-
-@main.route('update/<id>', methods=['PUT'])
+@main.route('update_session/<id>', methods=['PUT'])
 @jwt_required(optional=True)
-def update_user(id):
+def update_user_session(id):
     try:
         user_kw=request.json
         
-        affected_rows = UserModel.update_user(id,**user_kw)
+        affected_rows = UserModel.update_user_session(id,**user_kw)
         print(affected_rows)
         if affected_rows != 0:
             return jsonify({"message":"Modificacion"'''user.cedula'''}),200
         else:
             return jsonify({'message': "No user updated"}), 404
+
+    except Exception as ex:
+        return jsonify({'message': str(ex)}), 500
+
+@main.route('update_user/<id>', methods=['PUT'])
+@jwt_required(optional=True)
+def update_user(id):
+    #este debe tener el toquen para poder actualizarlo
+    try:
+        
+            user_kw=request.json
+            
+            affected_rows = UserModel.update_user(id,**user_kw)
+            print(affected_rows)
+            if affected_rows != 0:
+                return jsonify({"message":"Modificacion"'''user.cedula'''}),200
+            else:
+                return jsonify({'message': "No user updated"}), 404
 
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
