@@ -5,19 +5,20 @@ from models.UserModel import UserModel
 from models.AuthModel import AuthModel
 from models.entities.User import User
 from service.IaModel import IaModel
+from service.antecedentes import VerificationService
 from flask_jwt_extended import jwt_required
 
 main = Blueprint("model_blueprint", __name__)
 
-@main.route('/similarity/<id>', methods=['POST'])
+@main.route('/similarity/<cedula>', methods=['GET'])
 @jwt_required(optional=True)
-def porcentajes(id):
+def porcentajes(cedula):
     # Utilizar el modelo entrenado para comparar rostros    
-
+    
     try:
-        
-        user = UserModel.get_user_by_id(id)
-        
+        verification_service = VerificationService()
+        antecedentes = verification_service.verify_cedula(cedula)
+        user = UserModel.get_user(cedula)
 
         if user == None:
             return  jsonify({'message': "El usuario con el id no existe"}), 404
@@ -27,22 +28,11 @@ def porcentajes(id):
         foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
         delante_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
 
-        
-        
-        ''' Imagenes_entrenar = [cv2.imread('C:\\Users\\JHOJAN\\Desktop\\UNICAUCA\\UNICAUCA LAB_IV ELECTRONICA\\Back_Reconocimiento\\backend\\src\\service\\Entrenamiento\\imagen1.jpg'),
-                             cv2.imread('C:\\Users\\JHOJAN\\Desktop\\UNICAUCA\\UNICAUCA LAB_IV ELECTRONICA\\Back_Reconocimiento\\backend\\src\\service\\Entrenamiento\\imagen2.jpg')]
-        modelo = IaModel.entrenar_modelo(Imagenes_entrenar)'''
-        
-            # Mostrar las imágenes con los rectángulos dibujados
-        '''cv2.imshow('Rostros en la primera imagen', foto_cedula)
-        cv2.imshow('Rostros en la segunda imagen', foto_perfil)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()'''
-
         compatibility_percentage= IaModel.comparar_rostros(foto_perfil,delante_cedula)
         similarity = IaModel.comparar_bordes(huella, huella_cedula)
         return jsonify({'porcentaje_huella':similarity,
-                        'porcentaje_rostro':compatibility_percentage})
+                        'porcentaje_rostro':compatibility_percentage,
+                        'antecedentesJudiciales': antecedentes})
     
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
