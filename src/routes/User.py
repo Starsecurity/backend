@@ -54,7 +54,7 @@ def add_user():
             password = request.json['password']
             nombre_completo = request.json['nombre_completo']
             cedula = request.json['cedula']
-            telefono = int(request.json['telefono'])
+            telefono = request.json['telefono']
             huella = request.json['fingerprint']
             foto_perfil = request.json['profilePhoto']
             default_role = "usuario"
@@ -110,7 +110,6 @@ def update_user(id):
 def delete_user(id):
     try:
         user = User(id)
-
         affected_rows = UserModel.delete_user(user)
 
         if affected_rows == 1:
