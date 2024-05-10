@@ -35,6 +35,16 @@ class UserModel():
             raise Exception(ex)
 
     @classmethod
+    def get_user_username(cls, username):
+       
+
+        try:
+            user = session.query(UserSession).filter_by(username=username).first()
+            return user.to_JSON_session() if user else None
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
     def add_user(cls, user):
 
         try:
@@ -134,9 +144,23 @@ class UserModel():
             raise Exception(ex)
 
     @classmethod
-    def delete_user_session(cls, user):
+    def delete_user_session(cls, id):
         try:
             user = session.query(UserSession).get(id)
+            if user:
+                session.delete(user)
+                session.commit()
+                return user.id
+            else:
+                return None
+        except Exception as ex:
+            session.rollback()
+            raise Exception(ex)
+    @classmethod
+    def delete_user(cls, user):
+        #Debe tener el token
+        try:
+            user = session.query(Users).get(id)
             if user:
                 session.delete(user)
                 session.commit()
