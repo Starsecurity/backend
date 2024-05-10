@@ -1,6 +1,4 @@
-import cv2
-from flask import Blueprint, jsonify,request
-
+from flask import Blueprint, jsonify
 from models.UserModel import UserModel
 from service.IaModel import IaModel
 from service.antecedentes import VerificationService
@@ -8,7 +6,7 @@ from flask_jwt_extended import jwt_required
 
 main = Blueprint("model_blueprint", __name__)
 
-@main.route('/similarity/<id>', methods=['GET'])
+@main.route('/similarity/<cedula>', methods=['GET'])
 @jwt_required(optional=True)
 def porcentajes(cedula):
     # Utilizar el modelo entrenado para comparar rostros    

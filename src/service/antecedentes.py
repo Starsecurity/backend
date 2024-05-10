@@ -1,4 +1,3 @@
-#Se llama antecedentes.py porque el servicio se encarga de verificar si una persona tiene antecedentes judiciales
 import requests
 from bs4 import BeautifulSoup
 import random
