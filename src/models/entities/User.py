@@ -1,5 +1,5 @@
 from flask import session
-from sqlalchemy import Column, Enum, Integer, String
+from sqlalchemy import Column, Enum, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import check_password_hash
 
@@ -9,47 +9,67 @@ class RolEnum(Enum):
     ADMINISTRADOR = 'administrador'
     USUARIO = 'usuario'
 
-class User(Base):
-    __tablename__='usuarios'
-    id = Column(String, primary_key=True)
-    username = Column(String, nullable=False)
-    password = Column(String, nullable=False)
+class Users(Base):
+    __tablename__='users'
+    id_user = Column(String, primary_key=True)
     nombre_completo = Column(String, nullable=False)   
     cedula = Column(String, nullable=False)  # Puedes agregar 'unique=True' aquí si deseas
-    telefono = Column(Integer, nullable=False) 
+    telefono = Column(String, nullable=False) 
     foto_perfil = Column(String, nullable=True)
     huella = Column(String, nullable=True)
-    rol = Column(Enum('usuario', 'administrador', name='rol_enum'), nullable=False)
     delante_cedula = Column(String,nullable=True)
     reverso_cedula = Column(String,nullable=True)
+    user_session_id=Column(String,ForeignKey('usersession.id'))
 
-    def __init__(self, id,username, password, nombre_completo, cedula, telefono, foto_perfil, huella, rol,delante_cedula,reverso_cedula):
-        self.id=id
-        self.username = username
-        self.password = password
+    def __init__(self, id, nombre_completo, cedula, telefono, foto_perfil, huella,delante_cedula,reverso_cedula,user_session_id):
+        self.id_user=id
         self.nombre_completo = nombre_completo
         self.cedula = cedula
         self.telefono = telefono
         self.foto_perfil = foto_perfil
         self.huella = huella
-        self.rol = rol
         self.delante_cedula=delante_cedula
         self.reverso_cedula=reverso_cedula
+        self.user_session_id=user_session_id
 
 
     def to_JSON(self):
         return {
-            'id': self.id,
-            'name': self.username,
-            'password': self.password,
+            'id': self.id_user,
             'nombre_completo': self.nombre_completo,
             'cedula': self.cedula,
             'telefono': self.telefono,
             'profilePhoto': self.foto_perfil,
             'fingerprint': self.huella,
-            'rol': self.rol,
             'delante_cedula':self.delante_cedula,
-            'reverso_cedula':self.reverso_cedula
+            'reverso_cedula':self.reverso_cedula,
+            'user_session_id':self.user_session_id
+        }
+
+class UserSession(Base):
+    __tablename__='usersession'
+    id = Column(String, primary_key=True)
+    username = Column(String, nullable=False)
+    password = Column(String, nullable=False) 
+    correo=Column(String,nullable=False)
+    rol = Column(Enum('usuario', 'administrador', name='rol_enum'), nullable=False)
+
+    def __init__(self, id,username, password, correo,rol):
+        self.id=id
+        self.username = username
+        self.password = password
+        self.correo= correo
+        self.rol = rol
+
+
+
+    def to_JSON_session(self):
+        return {
+            'id': self.id,
+            'name': self.username,
+            'password': self.password,
+            'correo':self.correo,
+            'rol': self.rol
         }
 
     def check_password(self, password):
