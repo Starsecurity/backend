@@ -1,9 +1,6 @@
 import re, time, json
 from playwright.sync_api import Page, expect, sync_playwright
 
-# with open('../prueba/captcha_questions.json', 'r', encoding='utf-8') as file:
-#     captcha_questions = json.load(file)
-
 class VerificacionAntecedentes():
     def __init__(self):
         ruta_archivo = '../data/captcha_questions.json'
@@ -48,9 +45,13 @@ class VerificacionAntecedentes():
                 page.click('#btnConsultar')
                 
                 personal_data = page.locator(".datosConsultado").text_content()
+                
                 judicial_status = page.locator(".datosConsultado+h2").text_content()
                 
-                return personal_data, judicial_status
+                if judicial_status == "El ciudadano no presenta antecedentes":
+                    judicial_status_bolean = False
+                
+                return personal_data, judicial_status_bolean
                 
         except Exception as error:
             print(f"An error occurred: {error}")

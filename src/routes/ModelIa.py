@@ -48,7 +48,6 @@ def judicial_data(cedula):
         
         return jsonify({'user_data':user_data,
                         'antecedentes':antecedentes})
-
+ 
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
-
