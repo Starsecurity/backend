@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from models.UserModel import UserModel
 from service.IaModel import IaModel
 from service.antecedentes import VerificationService
+from service.resolve_captcha import VerificacionAntecedentes
 from flask_jwt_extended import jwt_required
 
 main = Blueprint("model_blueprint", __name__)
@@ -33,5 +34,23 @@ def porcentajes(cedula):
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
 
+@main.route('/antecedentes/<cedula>', methods=['GET'])
+# @jwt_required(optional=True)
+def porcentajes(cedula):
+    # Utilizar el modelo entrenado para comparar rostros    
+    
+    try:
+        verification_service = VerificacionAntecedentes()
+        user_data , antecedentes = verification_service.get_judicial_data(cedula)
+        
+        user = UserModel.get_user(cedula)
 
+        if user == None:
+            return  jsonify({'message': "El usuario con el id no existe"}), 404
+        
+        return jsonify({'user_data':user_data,
+                        'antecedentes':antecedentes})
+
+    except Exception as ex:
+        return  jsonify({'message': str(ex)}), 500
 
