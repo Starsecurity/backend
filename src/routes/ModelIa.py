@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required
 
 main = Blueprint("model_blueprint", __name__)
 
-@main.route('/similarity/<cedula>', methods=['GET'])
+@main.route('similarity/<cedula>', methods=['GET'])
 @jwt_required(optional=True)
 def porcentajes(cedula):
     # Utilizar el modelo entrenado para comparar rostros    
@@ -34,14 +34,12 @@ def porcentajes(cedula):
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
 
-@main.route('/antecedentes/<cedula>', methods=['GET'])
-# @jwt_required(optional=True)
-def porcentajes(cedula):
-    # Utilizar el modelo entrenado para comparar rostros    
-    
+@main.route('antecedentes/<cedula>', methods=['GET'])
+@jwt_required(optional=True)
+def judicial_data(cedula):
     try:
-        verification_service = VerificacionAntecedentes()
-        user_data , antecedentes = verification_service.get_judicial_data(cedula)
+        verificacion_judicial = VerificacionAntecedentes()
+        user_data, antecedentes = verificacion_judicial.get_judicial_data(cedula)
         
         user = UserModel.get_user(cedula)
 
