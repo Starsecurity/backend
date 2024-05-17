@@ -19,7 +19,7 @@ def porcentajes(cedula):
             return jsonify({'message': 'El id del usuario proporcionado no es valido'}), 404
         
         user = UserModel.get_user(cedula)
-
+        
         if user == None:
             return  jsonify({'message': "El usuario con el id no existe"}), 404
         
@@ -30,11 +30,17 @@ def porcentajes(cedula):
 
         compatibility_percentage= IaModel.comparar_rostros(foto_perfil,delante_cedula)
         similarity = IaModel.comparar_bordes(huella, huella_cedula)
+
+        resultado = comprobacion.comprobar_fiabilidad(compatibility_percentage,similarity,nombre,numero_id,antecedentes)
+        
+        user.update_user(user['id_user'], fiabilidad=resultado)
+
         return jsonify({'porcentaje_huella':similarity,
                         'porcentaje_rostro':compatibility_percentage,
                         'nombre':nombre,
                         'cedula':numero_id,
-                        'antecedentesJudiciales': antecedentes})
+                        'antecedentesJudiciales': antecedentes,
+                        'fiabilidad': resultado })
     
     except Exception as ex:
         return  jsonify({'message': str(ex)}), 500
