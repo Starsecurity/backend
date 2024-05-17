@@ -13,7 +13,6 @@ def login():
         password = request.json.get('password')
         # Verificar que se hayan proporcionado tanto el nombre de usuario como la contraseña
         if  not username or not password:
-            print("Estoy en if")
             return jsonify({'message': 'Missing username or password'}), 400
 
         # Llamar a la función login de AuthModel pasando el username y password

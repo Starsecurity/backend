@@ -101,7 +101,7 @@ def update_user(id):
             affected_rows = UserModel.update_user(id,**user_kw)
             print(affected_rows)
             if affected_rows != 0:
-                return jsonify({"message":"Modificacion"'''user.cedula'''}),200
+                return jsonify({"message":"Modificacion"}),200
             else:
                 return jsonify({'message': "No user updated"}), 404
 

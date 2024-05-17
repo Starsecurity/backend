@@ -10,18 +10,13 @@ class AuthModel:
         try:
             query = session.query(UserSession)
             user_from_db = query.filter(UserSession.username == username).first()
-            print(user_from_db.password)
-            print(password)
             if user_from_db.username == username and user_from_db.password.strip() == password:
                 access_token = create_access_token(identity=user_from_db.id)
                 user_json = user_from_db.to_JSON_session()
                 return jsonify({'token': access_token, 'user': user_json})
             else:
-                print("Estoy en else")
                 return jsonify({'message': 'Invalid username or password'}), 401
         except Exception as ex:
-
-            print("Estoy en login Model")
             raise Exception(ex)
 
     @classmethod

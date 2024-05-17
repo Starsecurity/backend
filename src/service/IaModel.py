@@ -65,9 +65,8 @@ class IaModel():
 
 
         for (x, y, w, h) in faces1:
-            print("Estoy en el for de faces1")
             roi_gray = gray1[y:y+h, x:x+w]
-            face_images.append(cv2.resize(roi_gray, (100, 100)))  # Redimensionar las imágenes para el entrenamiento
+            face_images.append(cv2.resize(roi_gray, (1600, 1000)))  # Redimensionar las imágenes para el entrenamiento
             labels.append(1)  # Etiqueta para la imagen de referencia
 
             
