@@ -50,6 +50,8 @@ class VerificacionAntecedentes():
                 
                 if judicial_status == "El ciudadano no presenta antecedentes":
                     judicial_status_bolean = False
+                else:
+                    judicial_status_bolean = True
                 
                 return personal_data, judicial_status_bolean
                 
