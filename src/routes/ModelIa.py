@@ -41,14 +41,15 @@ def porcentajes(cedula):
 def judicial_data(cedula):
     try:
         verificacion_judicial = VerificacionAntecedentes()
-        user_data, antecedentes = verificacion_judicial.get_judicial_data(cedula)
+        nombre, numero_id, antecedentes = verificacion_judicial.get_judicial_data(cedula)
         
         user = UserModel.get_user(cedula)
 
         if user == None:
             return  jsonify({'message': "El usuario con el id no existe"}), 404
         
-        return jsonify({'user_data':user_data,
+        return jsonify({'nombre':nombre,
+                        'cedula':numero_id,
                         'antecedentes':antecedentes})
  
     except Exception as ex:

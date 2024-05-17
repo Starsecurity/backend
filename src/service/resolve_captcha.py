@@ -3,17 +3,14 @@ from playwright.sync_api import Page, expect, sync_playwright
 
 class VerificacionAntecedentes():
     def __init__(self):
-        ruta_archivo = '/src/data/captcha_questions.json'
-        with open(ruta_archivo, 'r', encoding='utf-8') as file:
+        with open('src/data/captcha_questions.json', 'r', encoding='utf-8') as file:
             self.captcha_questions = json.load(file)
             
-    @classmethod
-    def captcha_answer(cls, captcha_question):
-        if captcha_question in cls.captcha_questions:
-            return cls.captcha_questions[captcha_question]
+    def captcha_answer(self, captcha_question):
+        if captcha_question in self.captcha_questions:
+            return self.captcha_questions[captcha_question]
     
-    @classmethod
-    def get_judicial_data(cls,cedula):
+    def get_judicial_data(self,cedula):
         try:
             with sync_playwright() as p:
                 tipo_cedula = "Cédula de ciudadanía - NUIP"
@@ -30,8 +27,7 @@ class VerificacionAntecedentes():
                 while True:  # Añadir un bucle para reintento
                     # Capturando y respondiendo al captcha
                     pregunta = page.query_selector("#lblPregunta").text_content()
-                    print(pregunta)
-                    answer = cls.captcha_answer(pregunta)
+                    answer = self.captcha_answer(pregunta)
                     
                     if answer:
                         page.wait_for_selector("#txtRespuestaPregunta").fill(answer)
@@ -56,6 +52,7 @@ class VerificacionAntecedentes():
                     numero_id = None
                 
                 judicial_status = page.locator(".datosConsultado+h2").text_content()
+                
                 if judicial_status == "El ciudadano no presenta antecedentes":
                     judicial_status_bolean = False
                 else:
