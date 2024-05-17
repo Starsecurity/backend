@@ -61,8 +61,6 @@ class UserSession(Base):
         self.correo= correo
         self.rol = rol
 
-
-
     def to_JSON_session(self):
         return {
             'id': self.id,
