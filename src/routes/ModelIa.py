@@ -14,7 +14,7 @@ def porcentajes(cedula):
     
     try:
         verificacion_judicial = VerificacionAntecedentes()
-        user_data, antecedentes = verificacion_judicial.get_judicial_data(cedula)
+        nombre, numero_id, antecedentes = verificacion_judicial.get_judicial_data(cedula)
         user = UserModel.get_user(cedula)
 
         if user == None:
@@ -29,7 +29,8 @@ def porcentajes(cedula):
         similarity = IaModel.comparar_bordes(huella, huella_cedula)
         return jsonify({'porcentaje_huella':similarity,
                         'porcentaje_rostro':compatibility_percentage,
-                        'user_data':user_data,
+                        'nombre':nombre,
+                        'cedula':numero_id,
                         'antecedentesJudiciales': antecedentes})
     
     except Exception as ex:

@@ -3,7 +3,7 @@ from playwright.sync_api import Page, expect, sync_playwright
 
 class VerificacionAntecedentes():
     def __init__(self):
-        ruta_archivo = '../data/captcha_questions.json'
+        ruta_archivo = '/src/data/captcha_questions.json'
         with open(ruta_archivo, 'r', encoding='utf-8') as file:
             self.captcha_questions = json.load(file)
             
@@ -45,15 +45,23 @@ class VerificacionAntecedentes():
                 page.click('#btnConsultar')
                 
                 personal_data = page.locator(".datosConsultado").text_content()
+                pattern = r'Señor\(a\)\s+([\w]+)\s+identificado\(a\) con\s+Cédula de ciudadanía\s+Número\s+(\d+).'
+                match = re.search(pattern, personal_data)
+                
+                if match:
+                    nombre = match.group(1)
+                    numero_id = match.group(2)
+                else:
+                    nombre = None
+                    numero_id = None
                 
                 judicial_status = page.locator(".datosConsultado+h2").text_content()
-                
                 if judicial_status == "El ciudadano no presenta antecedentes":
                     judicial_status_bolean = False
                 else:
                     judicial_status_bolean = True
                 
-                return personal_data, judicial_status_bolean
+                return nombre, numero_id, judicial_status_bolean
                 
         except Exception as error:
             print(f"An error occurred: {error}")
