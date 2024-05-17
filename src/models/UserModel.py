@@ -4,7 +4,7 @@ from database.db import session
 from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash
 
-from .entities.User import UserSession,Users
+from .entities.User import UserSession, Users
 
 
 class UserModel():
@@ -15,7 +15,7 @@ class UserModel():
             return [user.to_JSON() for user in users]
         except Exception as ex:
             raise Exception(ex)
-        
+
     @classmethod
     def get_user_by_id(cls, id):
         try:
@@ -26,7 +26,6 @@ class UserModel():
 
     @classmethod
     def get_user(cls, cedula):
-       
 
         try:
             user = session.query(Users).filter_by(cedula=cedula).first()
@@ -36,14 +35,14 @@ class UserModel():
 
     @classmethod
     def get_user_username(cls, username):
-       
 
         try:
-            user = session.query(UserSession).filter_by(username=username).first()
+            user = session.query(UserSession).filter_by(
+                username=username).first()
             return user.to_JSON_session() if user else None
         except Exception as ex:
             raise Exception(ex)
-        
+
     @classmethod
     def add_user(cls, user):
 
@@ -54,8 +53,8 @@ class UserModel():
         except Exception as ex:
             session.rollback()
             raise Exception(ex)
-    @classmethod
 
+    @classmethod
     def update_user(cls, id, **kwargs):
         try:
             query = session.query(Users)
@@ -68,7 +67,8 @@ class UserModel():
                         setattr(user_db, key, value)
 
                 session.commit()
-                updated_user = session.query(Users).filter(Users.id_user == id).first()
+                updated_user = session.query(Users).filter(
+                    Users.id_user == id).first()
                 return updated_user.to_JSON()
 
             else:
@@ -77,7 +77,6 @@ class UserModel():
             print("Estoy en ex")
             raise Exception(ex)
 
-    
     @classmethod
     def delete_user(cls, user):
         try:
@@ -91,6 +90,7 @@ class UserModel():
         except Exception as ex:
             session.rollback()
             raise Exception(ex)
+
     @classmethod
     def get_users_session(cls):
         try:
@@ -98,8 +98,7 @@ class UserModel():
             return [user.to_JSON_session() for user in users]
         except Exception as ex:
             raise Exception(ex)
-        
-    
+
     @classmethod
     def get_user_by_id_Session(cls, id):
         try:
@@ -118,8 +117,8 @@ class UserModel():
         except Exception as ex:
             session.rollback()
             raise Exception(ex)
-    @classmethod
 
+    @classmethod
     def update_user_session(cls, id, **kwargs):
         try:
             query = session.query(UserSession)
@@ -133,7 +132,8 @@ class UserModel():
                         setattr(user_db, key, value)
 
                 session.commit()
-                updated_user = session.query(UserSession).filter(UserSession.id == id).first()
+                updated_user = session.query(UserSession).filter(
+                    UserSession.id == id).first()
                 return updated_user.to_JSON_session()
 
             else:
@@ -156,9 +156,10 @@ class UserModel():
         except Exception as ex:
             session.rollback()
             raise Exception(ex)
+
     @classmethod
     def delete_user(cls, user):
-        #Debe tener el token
+        # Debe tener el token
         try:
             user = session.query(Users).get(id)
             if user:

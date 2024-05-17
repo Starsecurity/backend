@@ -10,11 +10,14 @@ main = Blueprint("model_blueprint", __name__)
 @main.route('similarity/<cedula>', methods=['GET'])
 @jwt_required(optional=True)
 def porcentajes(cedula):
-    # Utilizar el modelo entrenado para comparar rostros    
-    
+    # Utilizar el modelo entrenado para comparar rostros
     try:
         verificacion_judicial = VerificacionAntecedentes()
         nombre, numero_id, antecedentes = verificacion_judicial.get_judicial_data(cedula)
+ 
+        if nombre == None:
+            return jsonify({'message': 'El id del usuario proporcionado no es valido'}), 404
+        
         user = UserModel.get_user(cedula)
 
         if user == None:
@@ -42,6 +45,8 @@ def judicial_data(cedula):
     try:
         verificacion_judicial = VerificacionAntecedentes()
         nombre, numero_id, antecedentes = verificacion_judicial.get_judicial_data(cedula)
+        if nombre == None:
+            return jsonify({'message': 'El id del usuario proporcionado no es valido'}), 404
         
         user = UserModel.get_user(cedula)
 

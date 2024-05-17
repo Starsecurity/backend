@@ -40,6 +40,11 @@ class VerificacionAntecedentes():
                 page.wait_for_timeout(1000)
                 page.click('#btnConsultar')
                 
+                validation = page.locator("#ValidationSummary1").text_content()
+
+                if validation != "":
+                    return None,None,None
+                
                 personal_data = page.locator(".datosConsultado").text_content()
                 pattern = r'Señor\(a\)\s+([\w]+)\s+identificado\(a\) con\s+Cédula de ciudadanía\s+Número\s+(\d+).'
                 match = re.search(pattern, personal_data)

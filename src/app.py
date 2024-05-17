@@ -11,16 +11,13 @@ from database import db
 app = Flask(__name__)
 db.init_db()
 jwt = JWTManager(app)
-
 CORS(app,resources={"*":{"origins":"*"}})
 
 def page_not_found(error):
     return "<h1>Not found page</h1>", 404
 
-
 if __name__ == '__main__':
-
-
+    
     app.config.from_object(config['development'])
     
     app.register_blueprint(Register.main, url_prefix='/register')
