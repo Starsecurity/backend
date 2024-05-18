@@ -23,9 +23,9 @@ class UserModel():
             return user.to_JSON() if user else None
         except Exception as ex:
             raise Exception(ex)
+
     @classmethod
     def get_relationated_users(cls, id):
-
         try:
             users = session.query(Users).filter_by(user_session_id=id).all()
             return [user.to_JSON() for user in users]

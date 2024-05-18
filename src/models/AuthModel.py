@@ -3,13 +3,15 @@ from flask_jwt_extended import create_access_token
 from models.entities.User import UserSession
 from database.db import session
 
+
 class AuthModel:
-        
+
     @classmethod
     def login(cls, username, password):
         try:
             query = session.query(UserSession)
-            user_from_db = query.filter(UserSession.username == username).first()
+            user_from_db = query.filter(
+                UserSession.username == username).first()
             if user_from_db.username == username and user_from_db.password.strip() == password:
                 access_token = create_access_token(identity=user_from_db.id)
                 user_json = user_from_db.to_JSON_session()
