@@ -23,6 +23,7 @@ def add_user_session():
         default_role = "usuario"
         # Crear la instancia de User con el ID generado
         username_prueba = UserModel.get_user_username(username)
+
         if username_prueba is not None:
             return jsonify({'message':'El username ya existe ya existe'}),409
         #user.id = str(id)
@@ -36,7 +37,7 @@ def add_user_session():
         if affected_rows != 1:
             return user.to_JSON_session()
         else:
-                
+
             return jsonify({'message': "Error on insert"}), 500
         
     except Exception as ex:

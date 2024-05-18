@@ -25,6 +25,15 @@ def get_users():
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 
+@main.route('get_relacionated_users/<id>', methods=['GET'])
+@jwt_required(optional=True)
+def get_users():
+
+    try:
+        user = UserModel.get_relationated_users(id)
+        users = UserModel.get_users()
+    except Exception as ex:
+        return jsonify({'message': str(ex)}), 500
 
 @main.route('<cedula>')
 @jwt_required(optional=True)
@@ -101,7 +110,7 @@ def update_user(id):
             affected_rows = UserModel.update_user(id,**user_kw)
             print(affected_rows)
             if affected_rows != 0:
-                return jsonify({"message":"Modificacion"'''user.cedula'''}),200
+                return jsonify({"message":"Modificacion"}),200
             else:
                 return jsonify({'message': "No user updated"}), 404
 

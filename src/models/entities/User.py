@@ -20,8 +20,9 @@ class Users(Base):
     delante_cedula = Column(String,nullable=True)
     reverso_cedula = Column(String,nullable=True)
     user_session_id=Column(String,ForeignKey('usersession.id'))
+    fiabilidad = Column(String,nullable=True)
 
-    def __init__(self, id, nombre_completo, cedula, telefono, foto_perfil, huella,delante_cedula,reverso_cedula,user_session_id):
+    def __init__(self, id, nombre_completo, cedula, telefono, foto_perfil, huella,delante_cedula,reverso_cedula,user_session_id,fiabilidad):
         self.id_user=id
         self.nombre_completo = nombre_completo
         self.cedula = cedula
@@ -31,6 +32,7 @@ class Users(Base):
         self.delante_cedula=delante_cedula
         self.reverso_cedula=reverso_cedula
         self.user_session_id=user_session_id
+        self.fiabilidad =fiabilidad
 
 
     def to_JSON(self):
@@ -43,7 +45,8 @@ class Users(Base):
             'fingerprint': self.huella,
             'delante_cedula':self.delante_cedula,
             'reverso_cedula':self.reverso_cedula,
-            'user_session_id':self.user_session_id
+            'user_session_id':self.user_session_id,
+            'fiabilidad': self.fiabilidad
         }
 
 class UserSession(Base):
