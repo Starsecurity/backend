@@ -19,7 +19,7 @@ def add_user_session():
         # Obtener datos del formulario
         username = request.json['name']
         password = request.json['password']
-        correo=request.json['correo']
+        correo = request.json['correo']
         default_role = "usuario"
         # Crear la instancia de User con el ID generado
         username_prueba = UserModel.get_user_username(username)
