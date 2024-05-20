@@ -33,7 +33,7 @@ def get_users_realationated(id):
     try:
         users = UserModel.get_relationated_users(id)
         if users == None:
-            return jsonify({}), 404
+            return jsonify({"message": "No se encontraron usuarios registrados"}), 404
         return jsonify(users)
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
