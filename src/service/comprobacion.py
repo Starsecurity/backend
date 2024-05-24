@@ -1,6 +1,4 @@
 from models.UserModel import UserModel
-
-
 class Comprobacion():
 
     def comprobar_fiabilidad(self, compatibility_percentage, similarity, nombre, numero_id, antecedentes):
