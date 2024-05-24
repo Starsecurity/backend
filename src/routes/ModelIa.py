@@ -39,7 +39,10 @@ def porcentajes(cedula):
         resultado = comprobacion.comprobar_fiabilidad(
             compatibility_percentage, similarity, nombre, numero_id, antecedentes)
 
-        user.update_user(user['id_user'], fiabilidad=resultado)
+        query = user.update_user(user['id_user'], fiabilidad=resultado)
+        
+        if query == None:
+            return jsonify({'message': 'El id del usuario proporcionado no es valido'}), 404
 
         return jsonify({'porcentaje_huella': similarity,
                         'porcentaje_rostro': compatibility_percentage,
