@@ -36,7 +36,7 @@ class IaModel():
         return similarity
     @classmethod
     # Función para preprocesar las imágenes (opcional pero recomendado)
-    def preprocess_image(self,image):
+    def preprocess_image(cls,image):
         # Aplicar ecualización de histograma
         image = cv2.equalizeHist(image)
         return image
@@ -83,9 +83,6 @@ class IaModel():
             face_images.append(cv2.resize(roi_gray, (100, 100)))
             labels.append(1)  # Etiqueta para la imagen de referencia
 
-        '''if len(face_images) == 0:
-            print("Error: No se encontraron rostros en la primera imagen para entrenar el reconocedor")
-        return None'''
         # print(face_images)
         recognizer.train(face_images, np.array(labels))
 

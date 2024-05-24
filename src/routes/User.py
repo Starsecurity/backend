@@ -147,7 +147,7 @@ def add_user(id):
         foto_perfil = request.json['profilePhoto']
         delante_cedula = request.json['delante_cedula']
         reverso_cedula = request.json['reverso_cedula']
-        fiabilidad = ""
+        fiabilidad = "Falta verificar"
         user_session = UserModel.get_user_by_id_Session(id)
 
         if user_session:
@@ -162,7 +162,7 @@ def add_user(id):
         # user.id = str(id)
 
         user = Users(str(id_user), nombre_completo, cedula, telefono,
-                     foto_perfil, huella, delante_cedula, reverso_cedula, fiabilidad,user_session_id)
+                     foto_perfil, huella, delante_cedula, reverso_cedula, user_session_id,fiabilidad)
         # Agregar el usuario a la base de datos
         affected_rows = UserModel.add_user(user)
         print(affected_rows)

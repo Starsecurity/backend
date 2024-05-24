@@ -3,8 +3,12 @@ class Comprobacion():
 
     def comprobar_fiabilidad(self, compatibility_percentage, similarity, nombre, numero_id, antecedentes):
 
-        user = UserModel.get_user_by_id(numero_id)
-        name_bd = user['nombre']
+        user = UserModel.get_user(numero_id)
+        
+        if user == None:
+            return "No existe el usuario en la base de datos"
+        
+        name_bd = user['nombre_completo']
         # Convertir el string a mayúsculas
         uppercase_string = name_bd.upper()
         # Eliminar los espacios
