@@ -34,25 +34,21 @@ class IaModel():
         similarity = ssim(edges1, edges2)
 
         return similarity
-
     @classmethod
     # Función para preprocesar las imágenes (opcional pero recomendado)
-    def preprocess_image(cls, image):
+    def preprocess_image(cls,image):
         # Aplicar ecualización de histograma
         image = cv2.equalizeHist(image)
         return image
-
     @classmethod
     def comparar_rostros(cls, profilePhoto, delante_cedula):
         face_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         # Convertir las imágenes a escala de grises
-        # gray1 = cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY)
-        # gray2 = cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY)
-        gray1 = cls.preprocess_image(
-            cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY))
-        gray2 = cls.preprocess_image(cv2.cvtColor(
-            delante_cedula, cv2.COLOR_BGR2GRAY))
+        #gray1 = cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY)
+        #gray2 = cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY)
+        gray1 = cls.preprocess_image(cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY))
+        gray2 = cls.preprocess_image(cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY))
 
         # Detectar rostros en ambas imágenes
         faces1 = face_cascade.detectMultiScale(
@@ -61,7 +57,7 @@ class IaModel():
             gray2, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
         # Inicializar el reconocedor
-        # recognizer = cv2.face.EigenFaceRecognizer_create()
+        #recognizer = cv2.face.EigenFaceRecognizer_create()
         recognizer = cv2.face.LBPHFaceRecognizer_create()
 
         # Variables para el entrenamiento
@@ -105,5 +101,6 @@ class IaModel():
             if confidence < 100:  # Ajustar este umbral según sea necesario
                 matches += 1
         # Calcular el porcentaje de compatibilidad
-        compatibility_percentage = (matches / total_faces) * 100 if total_faces > 0 else 70
+        compatibility_percentage = (
+            matches / total_faces) * 100 if total_faces > 0 else 70
         return compatibility_percentage
