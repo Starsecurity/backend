@@ -23,10 +23,10 @@ def porcentajes(cedula):
             return jsonify({'message': 'El id del usuario proporcionado no es valido'}), 404
 
         user = UserModel.get_user(cedula)
-        id_user = user['id']
+        
         if user == None:
             return jsonify({'message': "El usuario con el id no existe"}), 404
-
+        id_user = user['id']
         huella = IaModel.transforma_en_imagen(user['fingerprint'])
         huella_cedula = IaModel.transforma_en_imagen(user['reverso_cedula'])
         foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
