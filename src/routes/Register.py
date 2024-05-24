@@ -1,7 +1,7 @@
 # Register.py
 from flask import Blueprint, jsonify, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
-
+from werkzeug.security import generate_password_hash, check_password_hash
 import uuid
 
 from models.entities.User import Users, UserSession
@@ -29,7 +29,10 @@ def add_user_session():
             return jsonify({'message': 'El username ya existe ya existe'}), 409
         # user.id = str(id)
         # hashed_password = generate_password_hash(password)
-        user = UserSession(str(id), username, password, correo, default_role)
+        # Hashear la contraseña
+        hashed_password = generate_password_hash(password,  method='pbkdf2:sha256', salt_length=16)
+
+        user = UserSession(str(id), username, hashed_password, correo, default_role)
         # Agregar el usuario a la base de datos
         affected_rows = UserModel.add_user_session(user)
         print(affected_rows)

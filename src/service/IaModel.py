@@ -34,14 +34,21 @@ class IaModel():
         similarity = ssim(edges1, edges2)
 
         return similarity
-
     @classmethod
-    def comparar_rostros(self, profilePhoto, delante_cedula):
+    # Función para preprocesar las imágenes (opcional pero recomendado)
+    def preprocess_image(self,image):
+        # Aplicar ecualización de histograma
+        image = cv2.equalizeHist(image)
+        return image
+    @classmethod
+    def comparar_rostros(cls, profilePhoto, delante_cedula):
         face_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         # Convertir las imágenes a escala de grises
-        gray1 = cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY)
-        gray2 = cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY)
+        #gray1 = cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY)
+        #gray2 = cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY)
+        gray1 = cls.preprocess_image(cv2.cvtColor(profilePhoto, cv2.COLOR_BGR2GRAY))
+        gray2 = cls.preprocess_image(cv2.cvtColor(delante_cedula, cv2.COLOR_BGR2GRAY))
 
         # Detectar rostros en ambas imágenes
         faces1 = face_cascade.detectMultiScale(
@@ -50,7 +57,8 @@ class IaModel():
             gray2, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
         # Inicializar el reconocedor
-        recognizer = cv2.face.EigenFaceRecognizer_create()
+        #recognizer = cv2.face.EigenFaceRecognizer_create()
+        recognizer = cv2.face.LBPHFaceRecognizer_create()
 
         # Variables para el entrenamiento
         face_images = []
@@ -72,7 +80,7 @@ class IaModel():
         for (x, y, w, h) in faces1:
             roi_gray = gray1[y:y+h, x:x+w]
             # Redimensionar las imágenes para el entrenamiento
-            face_images.append(cv2.resize(roi_gray, (1600, 1000)))
+            face_images.append(cv2.resize(roi_gray, (100, 100)))
             labels.append(1)  # Etiqueta para la imagen de referencia
 
         '''if len(face_images) == 0:
@@ -93,7 +101,7 @@ class IaModel():
             label, confidence = recognizer.predict(roi_gray_resized)
 
             # Incrementar el contador de coincidencias si el reconocimiento es exitoso
-            if confidence < 2000:  # Ajustar este umbral según sea necesario
+            if confidence < 100:  # Ajustar este umbral según sea necesario
                 matches += 1
         # Calcular el porcentaje de compatibilidad
         compatibility_percentage = (

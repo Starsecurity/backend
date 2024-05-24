@@ -1,6 +1,7 @@
 from flask import jsonify
 from flask_jwt_extended import create_access_token
 from models.entities.User import UserSession
+from werkzeug.security import check_password_hash
 from database.db import session
 
 
@@ -12,7 +13,8 @@ class AuthModel:
             query = session.query(UserSession)
             user_from_db = query.filter(
                 UserSession.username == username).first()
-            if user_from_db.username == username and user_from_db.password.strip() == password:
+            #if user_from_db.username == username and user_from_db.password.strip() == password:
+            if user_from_db and check_password_hash(user_from_db.password.strip(), password):
                 access_token = create_access_token(identity=user_from_db.id)
                 user_json = user_from_db.to_JSON_session()
                 return jsonify({'token': access_token, 'user': user_json})
