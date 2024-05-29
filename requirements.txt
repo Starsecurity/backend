@@ -39,3 +39,6 @@ urllib3==2.2.1
 Werkzeug==3.0.1
 wheel==0.42.0
 zipp==3.18.1
+tensorflow == 2.16.1 
+tf-keras == 2.16.0
+deepface == 0.0.91
