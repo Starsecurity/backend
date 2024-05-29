@@ -21,8 +21,12 @@ class IaModel:
     def comparar_bordes(cls, fingerprint, reverso_cedula):
         gray1 = cv2.cvtColor(fingerprint, cv2.COLOR_BGR2GRAY)
         gray2 = cv2.cvtColor(reverso_cedula, cv2.COLOR_BGR2GRAY)
-        edges1 = cv2.Canny(gray1, 100, 200)
-        edges2 = cv2.Canny(gray2, 100, 200)
+
+        # Detección de bordes usando el algoritmo Canny
+        edges1 = cv2.Canny(gray1, 2, 50)
+        edges2 = cv2.Canny(gray2, 2, 50)
+
+        # Calcular la similitud estructural entre los bordes de las imágenes
         similarity = ssim(edges1, edges2)
         return similarity
 
