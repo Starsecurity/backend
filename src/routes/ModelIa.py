@@ -42,7 +42,7 @@ def porcentajes(cedula):
         
         #si alguna de las fotos transformadas es None retorna un mensaje de error
         if huella == None or huella_cedula == None or foto_perfil == None or delante_cedula == None:
-            return jsonify({'message': 'Error al transformar las imagenes el url no es valido'}), 404
+            return jsonify({'message': 'Error al transformar las imagenes, el url no es valido'}), 404
 
         #Realiza la comparación de los rostros y las huellas
         compatibility_percentage = IaModel.comparar_rostros(
