@@ -148,6 +148,11 @@ def add_user(id):
         delante_cedula = request.json['delante_cedula']
         reverso_cedula = request.json['reverso_cedula']
         fiabilidad = "Falta verificar"
+        
+        #validaciones de los datos
+        if nombre_completo == None or cedula == None or telefono == None or huella == None or foto_perfil == None or delante_cedula == None or reverso_cedula == None:
+            return jsonify({'message': 'Faltan datos'}), 404
+        
         user_session = UserModel.get_user_by_id_Session(id)
 
         if user_session:

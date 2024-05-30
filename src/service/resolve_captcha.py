@@ -84,5 +84,6 @@ class VerificacionAntecedentes():
                 return nombre, numero_id, judicial_status_bolean
 
         except Exception as error:
-            print(f"An error occurred: {error}")
+            print(f"Hubo un error: {error}")
+            return None, None, None
 
