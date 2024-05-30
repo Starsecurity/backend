@@ -13,33 +13,42 @@ main = Blueprint("model_blueprint", __name__)
 def porcentajes(cedula):
     # Utilizar el modelo entrenado para comparar rostros
     try:
+        #Instancia las clases necesarias
         verificacion_judicial = VerificacionAntecedentes()
         comprobacion = Comprobacion()
 
+        #Obtiene los datos judiciales
         nombre, numero_id, antecedentes = verificacion_judicial.get_judicial_data(
             cedula)
 
+        #Si no se encuentra el usuario retorna un mensaje de error
         if nombre == None:
             return jsonify({'message': 'El id del usuario proporcionado no es valido'}), 404
 
+        #Obtiene los datos del usuario
         user = UserModel.get_user(cedula)
         
+        #Si no se encuentra el usuario retorna un mensaje de error
         if user == None:
             return jsonify({'message': "El usuario con el id no existe"}), 404
         
+        #Obtiene los datos necesarios para la comparación
         id_user = user['id']
         huella = IaModel.transforma_en_imagen(user['fingerprint'])
         huella_cedula = IaModel.transforma_en_imagen(user['reverso_cedula'])
         foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
         delante_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
 
+        #Realiza la comparación de los rostros y las huellas
         compatibility_percentage = IaModel.comparar_rostros(
             foto_perfil, delante_cedula)
         similarity = IaModel.comparar_bordes(huella, huella_cedula)
         
+        #Obtiene el resultado de la comprobación
         resultado = comprobacion.comprobar_fiabilidad(
              compatibility_percentage, similarity, nombre, numero_id, antecedentes)
         
+        #Actualiza la fiabilidad del usuario
         query = UserModel.update_user(id_user, fiabilidad = resultado)
         
         if query == None:

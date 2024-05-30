@@ -15,7 +15,8 @@ class IaModel:
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
             return image
         else:
-            return None, 404
+            print(f"Error al obtener la imagen desde la URL: {url}, código de estado: {response.status_code}")
+            return None
 
     @classmethod
     def comparar_bordes(cls, fingerprint, reverso_cedula):
@@ -28,7 +29,9 @@ class IaModel:
 
         # Calcular la similitud estructural entre los bordes de las imágenes
         similarity = ssim(edges1, edges2)
-        return similarity
+        if similarity < 0.6:
+            huella_comprobacion = False
+        return huella_comprobacion
 
     @classmethod
     def preprocess_image(cls, image):
@@ -49,12 +52,11 @@ class IaModel:
         result = DeepFace.verify(img1_rgb, img2_rgb, model_name='VGG-Face')
 
         # Calcular el porcentaje de compatibilidad
-        compatibility_percentage = (1 - result['distance']) * 100
-
+        # compatibility_percentage = (1 - result['distance'])
+        validacion = result['verified']
         # Imprimir el resultado de la verificación
-        print(f"Resultado: {result['verified']}")
-        print(f"Distancia: {result['distance']}")
-        print(f"Porcentaje de compatibilidad: {compatibility_percentage:.2f}%")
+        # print(f"Resultado: {result['verified']}")
+        # print(f"Distancia: {result['distance']}")
+        # print(f"Porcentaje de compatibilidad: {compatibility_percentage:.2f}%")
 
-        return compatibility_percentage
-
+        return validacion

@@ -6,7 +6,7 @@ from playwright.sync_api import Page, expect, sync_playwright
 
 class VerificacionAntecedentes():
     def __init__(self):
-        with open('data/captcha_questions.json', 'r', encoding='utf-8') as file:
+        with open('src/data/captcha_questions.json', 'r', encoding='utf-8') as file:
             self.captcha_questions = json.load(file)
 
     def captcha_answer(self, captcha_question):

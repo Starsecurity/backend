@@ -1,7 +1,7 @@
 from models.UserModel import UserModel
 class Comprobacion():
 
-    def comprobar_fiabilidad(self, compatibility_percentage, similarity, nombre, numero_id, antecedentes):
+    def comprobar_fiabilidad(self, validacion, similarity, nombre, numero_id, antecedentes):
 
         user = UserModel.get_user(numero_id)
         
@@ -15,9 +15,10 @@ class Comprobacion():
         final_name = uppercase_string.replace(" ", "")
         id_bd = user['cedula']
 
-        if compatibility_percentage < 0.6:
+        
+        if validacion == False:
             return "Baja fiabilidad"
-        if similarity < 0.6:
+        if similarity == False:
             return "Baja fiabilidad"
         if antecedentes:
             return "Baja fiabilidad"
