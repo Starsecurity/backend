@@ -34,10 +34,15 @@ def porcentajes(cedula):
         
         #Obtiene los datos necesarios para la comparación
         id_user = user['id']
+        
         huella = IaModel.transforma_en_imagen(user['fingerprint'])
         huella_cedula = IaModel.transforma_en_imagen(user['reverso_cedula'])
         foto_perfil = IaModel.transforma_en_imagen(user['profilePhoto'])
         delante_cedula = IaModel.transforma_en_imagen(user['delante_cedula'])
+        
+        #si alguna de las fotos transformadas es None retorna un mensaje de error
+        if huella == None or huella_cedula == None or foto_perfil == None or delante_cedula == None:
+            return jsonify({'message': 'Error al transformar las imagenes el url no es valido'}), 404
 
         #Realiza la comparación de los rostros y las huellas
         compatibility_percentage = IaModel.comparar_rostros(
