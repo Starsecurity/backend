@@ -18,7 +18,7 @@ class VerificacionAntecedentes():
             with sync_playwright() as p:
                 tipo_cedula = "Cédula de ciudadanía - NUIP"
 
-                browser = p.chromium.launch()
+                browser = p.chromium.launch(headless=False)
                 page = browser.new_page()
                 url = "https://apps.procuraduria.gov.co/webcert/inicio.aspx"
                 page.goto(url)
@@ -44,17 +44,17 @@ class VerificacionAntecedentes():
                         time.sleep(2)
 
                 # Esperar un tiempo antes de finalizar la navegación
-                page.wait_for_timeout(100)
+                page.wait_for_timeout(500)
                 page.click('#btnConsultar')
 
                 try:
-                    validation = page.wait_for_selector("#ValidationSummary1",timeout=1000).text_content()
+                    validation = page.wait_for_selector("#ValidationSummary1",timeout=1500).text_content()
                     print(validation)
                 except:
                     validation = ""
                     
                 try:
-                    validation2 = page.wait_for_selector("#ValidationSummary2",timeout=1000).text_content()
+                    validation2 = page.wait_for_selector("#ValidationSummary2",timeout=1500).text_content()
                 except:
                     validation2 = ""
                 
