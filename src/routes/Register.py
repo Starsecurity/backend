@@ -21,7 +21,7 @@ def add_user_session():
         username = request.json['name']
         password = request.json['password']
         correo = request.json['correo']
-        default_role = "usuario"
+        default_role = "administrador"
         # Crear la instancia de User con el ID generado
         username_prueba = UserModel.get_user_username(username)
 

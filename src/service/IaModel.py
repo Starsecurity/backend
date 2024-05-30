@@ -31,6 +31,8 @@ class IaModel:
         similarity = ssim(edges1, edges2)
         if similarity < 0.6:
             huella_comprobacion = False
+        else:
+            huella_comprobacion = True
         return huella_comprobacion
 
     @classmethod
