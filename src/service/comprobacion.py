@@ -14,7 +14,7 @@ class Comprobacion():
         # Eliminar los espacios
         final_name = uppercase_string.replace(" ", "")
         id_bd = user['cedula']
-
+        
         
         if validacion == False:
             return "Baja fiabilidad"
