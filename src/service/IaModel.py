@@ -26,11 +26,12 @@ class IaModel:
         gray2 = cv2.cvtColor(reverso_cedula, cv2.COLOR_BGR2GRAY)
 
         # Detección de bordes usando el algoritmo Canny
-        edges1 = cv2.Canny(gray1, 2, 150)
-        edges2 = cv2.Canny(gray2, 2, 150)
+        edges1 = cv2.Canny(gray1, 2, 70)
+        edges2 = cv2.Canny(gray2, 2, 70)
 
         # Calcular la similitud estructural entre los bordes de las imágenes
         similarity = ssim(edges1, edges2)
+        print(similarity)
         if similarity < 0.6:
             huella_comprobacion = False
         else:

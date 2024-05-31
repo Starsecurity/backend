@@ -16,14 +16,14 @@ main = Blueprint("user_blueprint", __name__)
 def get_users():
 
     try:
-        current_user_id = get_jwt_identity()
-        user = UserModel.get_user_by_id(current_user_id)
-        current_user_role = user['rol']
-        if current_user_role == "administrador":
-            users = UserModel.get_users()
-            return jsonify(users)
-        else:
-            return jsonify({'message': "Unauthorize"}), 404
+        # current_user_id = get_jwt_identity()
+        # user = UserModel.get_user_by_id(current_user_id)
+        # current_user_role = user['rol']
+        # if current_user_role == "administrador":
+        users = UserModel.get_users()
+        return jsonify(users)
+        # else:
+        #     return jsonify({'message': "Unauthorize"}), 404
     except Exception as ex:
         return jsonify({'message': str(ex)}), 500
 
@@ -154,12 +154,12 @@ def add_user(id):
         if nombre_completo == None or cedula == None or telefono == None or huella == None or foto_perfil == None or delante_cedula == None or reverso_cedula == None:
             return jsonify({'message': 'Faltan datos'}), 404
         
-        try:
-            stat3, selfie = IaModel.transforma_en_imagen(foto_perfil)
-            stat4, fron_id = IaModel.transforma_en_imagen(delante_cedula)
-            IaModel.comparar_rostros(selfie, fron_id)
-        except ValueError as e:
-            return jsonify({'message': "Las fotos tomadas no son validas, por favor repita las fotos", 'error': str(e)}),404
+        # try:
+        #     stat3, selfie = IaModel.transforma_en_imagen(foto_perfil)
+        #     stat4, fron_id = IaModel.transforma_en_imagen(delante_cedula)
+        #     IaModel.comparar_rostros(selfie, fron_id)
+        # except ValueError as e:
+        #     return jsonify({'message': "Las fotos tomadas no son validas, por favor repita las fotos", 'error': str(e)}),404
         
         user_session = UserModel.get_user_by_id_Session(id)
 
