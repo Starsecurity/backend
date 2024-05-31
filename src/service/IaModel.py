@@ -13,10 +13,12 @@ class IaModel:
             image_bytes = response.content
             nparr = np.frombuffer(image_bytes, np.uint8)
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            return image
+            status = True
+            return status,image
         else:
             print(f"Error al obtener la imagen desde la URL: {url}, código de estado: {response.status_code}")
-            return None
+            status = False
+            return status, None
 
     @classmethod
     def comparar_bordes(cls, fingerprint, reverso_cedula):
