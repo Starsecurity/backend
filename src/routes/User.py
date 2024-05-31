@@ -6,6 +6,7 @@ import uuid
 from models.entities.User import UserSession, Users
 
 from models.UserModel import UserModel
+from service.IaModel import IaModel
 
 main = Blueprint("user_blueprint", __name__)
 
@@ -152,6 +153,13 @@ def add_user(id):
         #validaciones de los datos
         if nombre_completo == None or cedula == None or telefono == None or huella == None or foto_perfil == None or delante_cedula == None or reverso_cedula == None:
             return jsonify({'message': 'Faltan datos'}), 404
+        
+        try:
+            stat3, selfie = IaModel.transforma_en_imagen(foto_perfil)
+            stat4, fron_id = IaModel.transforma_en_imagen(delante_cedula)
+            IaModel.comparar_rostros(selfie, fron_id)
+        except ValueError as e:
+            return jsonify({'message': "Las fotos tomadas no son validas, por favor repita las fotos", 'error': str(e)}),404
         
         user_session = UserModel.get_user_by_id_Session(id)
 
