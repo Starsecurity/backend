@@ -8,17 +8,17 @@ from deepface import DeepFace
 class IaModel:
     @classmethod
     def transforma_en_imagen(cls, url):
+        stat = True
         response = requests.get(url)
         if response.status_code == 200:
             image_bytes = response.content
             nparr = np.frombuffer(image_bytes, np.uint8)
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            status = True
-            return status,image
+            return stat,image
         else:
             print(f"Error al obtener la imagen desde la URL: {url}, código de estado: {response.status_code}")
-            status = False
-            return status, None
+            stat = False
+            return stat, None
 
     @classmethod
     def comparar_bordes(cls, fingerprint, reverso_cedula):
