@@ -86,20 +86,6 @@ class UserModel():
             raise Exception(ex)
 
     @classmethod
-    def delete_user(cls, user):
-        try:
-            user = session.query(Users).get(id)
-            if user:
-                session.delete(user)
-                session.commit()
-                return id
-            else:
-                return None
-        except Exception as ex:
-            session.rollback()
-            raise Exception(ex)
-
-    @classmethod
     def get_users_session(cls):
         try:
             users = session.query(UserSession).all()

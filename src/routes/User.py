@@ -120,7 +120,8 @@ def delete_user_session(id):
 def delete_user(id):
     # Requiere el toquen
     try:
-        user = Users(id)
+        
+        user = UserModel.get_user_by_id(id)
 
         affected_rows = UserModel.delete_user(user)
 
